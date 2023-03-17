@@ -1,0 +1,114 @@
+.Sidebar {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-top: 4rem;
+    transition: all 300ms ease;
+    margin-left: -170px;
+  }
+  .bar {
+    display: none;
+  }
+  
+  .logo {
+    display: flex;
+    font-weight: bold;
+    height: 5rem;
+    font-size: 32px;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    margin-right: 110px;
+  }
+  
+  .logo > logo-icon {
+    height: 3rem;
+    width: 3rem;
+    cursor: pointer;
+  }
+  
+  .logo > span > span {
+    color: lightgreen;
+  }
+  
+  .menu {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    padding-left: 40px;
+  }
+  .menu > div > span {
+    font-weight: bold;
+  }
+  .sjj {
+    display: inline;
+    padding: 10px;
+  }
+  
+  .menu > div {
+    cursor: pointer;
+  }
+  
+  .signbutton {
+    margin-top: 5rem;
+  }
+  
+  a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  @media screen and (max-width: 1200px) {
+    .logo {
+      font-size: 20px;
+      margin-right: 50px;
+      margin-bottom: -50px;
+    }
+    .sp {
+      font-size: 12px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .Sidebar {
+      position: fixed;
+      z-index: 9;
+      background: linear-gradient(
+        to right,
+        rgb(182, 244, 146),
+        rgb(51, 139, 147)
+      );
+      height: 97%;
+      border-radius: 6px;
+      width: 68%;
+      margin-left: 3px;
+    }
+    .logo {
+      margin-left: 20px;
+    }
+    .menu {
+      margin-left: -20px;
+      padding-left: 30px;
+    }
+    .signbutton {
+      font-size: 15px;
+      margin-left: 10px;
+    }
+    .bar {
+      display: flex;
+      position: fixed;
+      top: 2rem;
+      z-index: 9;
+      background: linear-gradient(
+        to right,
+        rgb(182, 244, 146),
+        rgb(51, 139, 147)
+      );
+      padding: 10px;
+      border-radius: 10px;
+    }
+  }
+  

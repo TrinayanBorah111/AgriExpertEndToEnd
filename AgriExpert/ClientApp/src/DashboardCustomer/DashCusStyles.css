@@ -1,0 +1,79 @@
+.Dashboard {
+    background: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .AppGlass {
+    display: grid;
+    height: 97%;
+    width: 97%;
+    border-radius: 2rem;
+    background-color: var(--glass);
+    overflow: hidden;
+    grid-template-columns: 16rem auto 20rem;
+  }
+  
+  .informationCus {
+    display: flex;
+    flex-direction: column;
+    margin-left: 400px;
+    margin-right: 400px;
+    margin-top: 100px;
+    margin-bottom: 1000px;
+    gap: 2rem;
+  }
+  
+  div > div > div > input {
+    border: 2px green solid;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  
+  div > div > div > button {
+    color: green;
+  }
+  
+  div > div > div > button:hover {
+    color: lightgreen;
+  }
+  
+  @media screen and (max-width: 1200px) {
+    .AppGlass {
+      grid-template-columns: 10% 50% auto;
+      overflow-y: scroll;
+      grid-template-columns: 16rem auto;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .AppGlass::-webkit-scrollbar {
+      display: none;
+    }
+    .AppGlass {
+      grid-template-columns: 1fr;
+    }
+    .informationCus {
+      margin-left: 5px;
+      margin-top: 10rem;
+      margin-right: 1rem;
+    }
+  
+    div > div > div > button {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 8rem;
+      margin-left: 100px;
+    }
+  
+    div > div > div > input {
+      border: 1px green solid;
+      border-radius: 3px;
+      margin-left: 100px;
+    }
+  }
+  

@@ -1,0 +1,145 @@
+.PopUpContainer {
+    max-width: 600px;
+    width: 100%;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    display: flex;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.75);
+    margin-top: 30px;
+  }
+  
+  .closeBtn {
+    color: black;
+    margin-left: 293px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .s {
+    width: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .PopUpRight {
+    width: 100%;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin-top: 3rem;
+    padding: 1rem 2rem;
+    color: black;
+  }
+  
+  .btnContainer {
+    display: flex;
+    padding: 1rem 1rem;
+  }
+  
+  .bold {
+    font-weight: 900;
+  }
+  
+  .otp {
+    margin-top: 10px;
+  }
+  
+  .timer-buttons {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+  }
+  
+  .send-button {
+    padding: 10px 20px;
+    background-color: lightgreen;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+  }
+  
+  .resend-button {
+    padding: 10px 20px;
+    background-color: lightgreen;
+    margin-left: 30px;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+  }
+  
+  .send-button:active,
+  .resend-button:active {
+    transform: scale(0.95);
+  }
+  
+  .resend-button:disabled {
+    background-color: gray;
+    color: white;
+    cursor: not-allowed;
+    margin-right: 30px;
+  }
+  
+  .time-left {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: green;
+  }
+  
+  .timer-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .s {
+      display: none;
+    }
+  
+    .PopUpContainer {
+      width: 80%;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  
+    .content {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  
+    .send-button {
+      width: 50%;
+      color: black;
+      background-color: lightgreen;
+    }
+  
+    .resend-button {
+      width: 50%;
+      color: black;
+      background-color: lightgreen;
+      margin-right: 30px;
+    }
+  
+    .closeBtn {
+      margin-left: 250px;
+    }
+  }
+  

@@ -1,0 +1,18 @@
+.Dashboard {
+    background: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .AppGlass {
+    display: grid;
+    height: 97%;
+    width: 97%;
+    border-radius: 2rem;
+    background-color: var(--glass);
+    overflow: hidden;
+    grid-template-columns: 16rem auto;
+  }
+  
