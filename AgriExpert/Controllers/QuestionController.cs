@@ -51,6 +51,20 @@ namespace AgriExpert.Controllers
             return Ok(questionDTO);
 
         }
+        [HttpGet]
+        [Route("expert/{id:guid}")]
+        [ActionName("GetQuestionAsync")]
+        //[Authorize(Roles = "Expert,Admin")]
+        public async Task<IActionResult> GetAllAsyncExpertId(Guid id)
+        {
+            //Fetch data from database
+            var questions = await questionRepository.GetAllAsyncExpertId(id);
+            //Convert data to DTO
+            var questionDTO = mapper.Map<List<Models.DTO.Questions>>(questions);
+            //Return response
+            return Ok(questionDTO);
+
+        }
         [HttpPost]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddQuestionAsync([FromBody] Models.DTO.AddQuestionRequest addQuestionRequest)

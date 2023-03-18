@@ -78,23 +78,23 @@ function SidebarEx() {
 
         {/* Menu */}
         <div className="menu">
-          
+          <a href="/dashboardexpert">
             <div>
               <div className="sjj">
                 <UilUserCheck />
               </div>
               <span className="sp"> Solved Questions </span>
             </div>
-          
+          </a>
 
-          
+          <a href="/expertunsolved">
             <div>
               <div className="sjj">
                 <UilUserTimes />
               </div>
               <span className="sp"> Unsolved Questions </span>
             </div>
-          
+          </a>
           <div className="signbutton">
             <a href="/">
               <UilSignOutAlt color="black" />

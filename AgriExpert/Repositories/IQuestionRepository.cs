@@ -8,6 +8,7 @@ namespace AgriExpert.Repositories
     public interface IQuestionRepository
     {
         Task<IEnumerable<Questions>> GetAllAsync();
+        Task<IEnumerable<Questions>> GetAllAsyncExpertId(Guid id);
         Task<Questions> GetAsync(Guid id);
         Task<Questions> AddAsync(Questions question);
         Task<Questions> UpdateAsync(Guid id, Questions question);

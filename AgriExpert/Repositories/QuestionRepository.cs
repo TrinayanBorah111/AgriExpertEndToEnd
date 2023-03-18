@@ -3,6 +3,7 @@ using AgriExpert.Models.Forum;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgriExpert.Repositories
@@ -44,6 +45,16 @@ namespace AgriExpert.Repositories
                .Include(x => x.Customers)
                .Include(x => x.Experts)
                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Questions>> GetAllAsyncExpertId(Guid id)
+        {
+            return await agriExpertDbContext.Questions
+            .Include(x => x.Customers)
+            .Include(x => x.Experts)
+            .Where(x => x.ExpertsId == id).ToListAsync();
+
+
         }
 
         public async Task<Questions> GetAsync(Guid id)

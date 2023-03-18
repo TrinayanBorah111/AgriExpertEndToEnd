@@ -21,6 +21,7 @@ export default function DataGridDemo(props) {
                 row.packagesInfo = row.packages.packageName
             } else if (row.questionsId != null && row.questionContext!==null) {
                 row.id = getRandomName(row.questionsId)
+                row.answeredBy = row.experts?.expertFullName
             }
             
         })

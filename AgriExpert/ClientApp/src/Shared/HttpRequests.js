@@ -53,6 +53,16 @@
                     console.log(error)
                 })
             return data;
+        },
+        async getAllQuestionsWithExpertID(id) {
+            //GET call
+            const data = await fetch(`/question/expert/${id}`, {
+                method: 'GET'
+            }).then(response => response.json())
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
         }
     }
 };
