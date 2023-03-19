@@ -4,6 +4,8 @@ import SearchBox from "./Search";
 import Table from "../Table/Table";
 import Services from '../../Shared/HttpRequests';
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
+
 const UnsolvedQuestionscolumns = [
     { field: "id", headerName: "Question ID", width: 180 },
     {
@@ -33,13 +35,25 @@ const UnsolvedQuestionscolumns = [
 ];
 
 const UnSolved = () => {
+    const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
     useEffect(() => {
-        fetchResponse();
+        validateAuthToken();
     }, []);
+    const validateAuthToken = () => {
+        const token = sessionStorage.getItem('authToken')
+        const authToken = !!token
+        if (authToken) {
+            fetchResponse();
+        } else {
+            navigate(`/admin`)
+        }
+    }
     const fetchResponse = async () => {
-        let data = await Services.questionConfigurations.getAllQuestions();
+        const token = sessionStorage.getItem("authToken");
+        let authTokenURL = await Services.authConfigurations.getAuthURL('/question', token)
+        let data = await Services.questionConfigurations.getAllQuestions(authTokenURL);
         data = data.map(value => {
             if (value.questionStatus == "NotAnswered")
                 return value;

@@ -7,5 +7,6 @@ namespace AgriExpert.Models.User
         public Guid AdminsId { get; set; }
         public string AdminUserName { get; set; }
         public string AdminPassword { get; set; }
+        public string Role { get; set; }
     }
 }

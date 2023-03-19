@@ -11,7 +11,7 @@ namespace AgriExpert.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository customerRepository;

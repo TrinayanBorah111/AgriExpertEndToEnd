@@ -24,7 +24,14 @@ namespace AgriExpert.Repositories
             await agriExpertDbContext.SaveChangesAsync();
             return expert;
         }
-
+        public async Task<Experts> AuthenticateExpertAsync(string username, string password)
+        {
+            var Experts = await agriExpertDbContext.Experts
+                .ToListAsync();
+            var expert = Experts.Find(x => x.ExpertUserName.Equals(username, StringComparison.InvariantCultureIgnoreCase) &&
+            x.ExpertPassword == password);
+            return expert;
+        }
         public async Task<Experts> DeleteAsync(Guid id)
         {
             var expert = await agriExpertDbContext.Experts.FirstOrDefaultAsync(x => x.ExpertsId == id);

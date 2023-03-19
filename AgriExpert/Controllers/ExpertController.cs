@@ -22,7 +22,7 @@ namespace AgriExpert.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllExperts()
         {
             //Fetch data from database

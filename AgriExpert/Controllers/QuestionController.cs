@@ -11,6 +11,7 @@ namespace AgriExpert.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class QuestionController : Controller
     {
         private readonly IQuestionRepository questionRepository;

@@ -12,5 +12,6 @@ namespace AgriExpert.Repositories
         Task<Experts> AddAsync(Experts expert);
         Task<Experts> DeleteAsync(Guid id);
         Task<Experts> UpdateAsync(Guid id, Experts expert);
+        Task<Experts> AuthenticateExpertAsync(string username, string password);
     }
 }

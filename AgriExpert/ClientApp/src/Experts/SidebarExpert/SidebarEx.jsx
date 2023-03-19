@@ -50,7 +50,9 @@ function SidebarEx() {
     screenSize === "mobile"
       ? `${expanded ? "mobileExpanded" : "mobileCollapsed"}`
       : `${expanded ? "desktopExpanded" : "desktopCollapsed"}`;
-
+    const handleLogout = () => {
+        sessionStorage.clear()
+    }
   return (
     <>
       <div
@@ -96,9 +98,9 @@ function SidebarEx() {
             </div>
           </a>
           <div className="signbutton">
-            <a href="/">
+            <a href="/expertsignin" >
               <UilSignOutAlt color="black" />
-              <span> Log Out </span>
+              <span onClick={handleLogout}> Log Out </span>
             </a>
           </div>
         </div>

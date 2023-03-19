@@ -53,7 +53,11 @@ function SidebarAdmin() {
   const sidebarAnimation =
     screenSize === "mobile"
       ? `${expanded ? "mobileExpanded" : "mobileCollapsed"}`
-      : `${expanded ? "desktopExpanded" : "desktopCollapsed"}`;
+            : `${expanded ? "desktopExpanded" : "desktopCollapsed"}`;
+
+    const handleLogout = () => {
+        sessionStorage.clear()
+    }
   return (
     <>
       <div
@@ -136,9 +140,9 @@ function SidebarAdmin() {
           </a>
 
           <div className="signbutton">
-            <a href="/admin">
+            <a href="/admin" >
               <UilSignOutAlt color="black" />
-              <span> Log Out </span>
+              <span onClick={handleLogout}> Log Out </span>
             </a>
           </div>
         </div>

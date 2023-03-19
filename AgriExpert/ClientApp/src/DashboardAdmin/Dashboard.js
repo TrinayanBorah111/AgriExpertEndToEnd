@@ -3,6 +3,7 @@ import SidebarAdmin from "./Sidebar/Sidebar";
 import Table from "./Table/Table";
 import Services from '../Shared/HttpRequests';
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
 
 const Expertcolumns = [
     { field: "id", headerName: "Expert ID", width: 180 },
@@ -38,13 +39,25 @@ const Expertcolumns = [
     }
 ];
 function DashboardAdmin() {
+    const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
     useEffect(() => {
-        fetchResponse();
+        validateAuthToken();
     }, []);
+    const validateAuthToken = () => {
+        const token = sessionStorage.getItem('authToken')
+        const authToken = !!token
+        if (authToken) {
+            fetchResponse();
+        } else {
+            navigate(`/admin`)
+        }
+    }
     const fetchResponse = async () => {
-        const data = await Services.adminConfigurations.getAllExperts();
+        const token = sessionStorage.getItem("authToken");
+        let authTokenURL = await Services.authConfigurations.getAuthURL('/expert', token)
+        const data = await Services.adminConfigurations.getAllExperts(authTokenURL);
         setserverResponse(data);
         setisLoaded(true);
     }

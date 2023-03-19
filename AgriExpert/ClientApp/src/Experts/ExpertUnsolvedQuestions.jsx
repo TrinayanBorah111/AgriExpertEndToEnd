@@ -3,6 +3,8 @@ import SidebarEx from './SidebarExpert/SidebarEx'
 import Services from '../Shared/HttpRequests';
 import Table from "../DashboardAdmin/Table/Table";
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
+
 const SolvedQuestionscolumns = [
     { field: "id", headerName: "Question ID", width: 180 },
     {
@@ -38,13 +40,25 @@ const SolvedQuestionscolumns = [
 ];
 
 const ExpertUnsolvedQuestions = () => {
+    const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
     useEffect(() => {
-        fetchResponse();
+        validateAuthToken();
     }, []);
+    const validateAuthToken = () => {
+        const token = sessionStorage.getItem('authExpertToken')
+        const authToken = !!token
+        if (authToken) {
+            fetchResponse();
+        } else {
+            navigate(`/expertsignin`)
+        }
+    }
     const fetchResponse = async () => {
-        let data = await Services.questionConfigurations.getAllQuestionsWithExpertID('68db8b52-5fcf-4c73-a47b-d9c239662646');
+        const token = sessionStorage.getItem("authExpertToken");
+        let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/expert/68db8b52-5fcf-4c73-a47b-d9c239662646`, token)
+        let data = await Services.questionConfigurations.getAllQuestionsWithExpertID('68db8b52-5fcf-4c73-a47b-d9c239662646', authTokenURL);
         data = data.map(value => {
             if (value.questionStatus == "InProgress")
                 return value;

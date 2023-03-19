@@ -12,19 +12,21 @@ export default function DataGridDemo(props) {
   const [isLoaded, setisLoaded] = useState(false);
     useEffect(() => {
         columns = props.columns;
-        rows = props.data;
-        rows.map(row => {
-            if (row.role == "Expert") {
-                row.id = getRandomName(row.expertsId)
-            } else if (row.customersId != null && row.customerPhone != null) {
-                row.id = getRandomName(row.customersId)
-                row.packagesInfo = row.packages.packageName
-            } else if (row.questionsId != null && row.questionContext!==null) {
-                row.id = getRandomName(row.questionsId)
-                row.answeredBy = row.experts?.expertFullName
-            }
-            
-        })
+        rows = props.data[0] == undefined ? [] : props.data; 
+        if (rows.length > 0) {
+            rows.map(row => {
+                if (row.role == "Expert") {
+                    row.id = getRandomName(row.expertsId)
+                } else if (row.customersId != null && row.customerPhone != null) {
+                    row.id = getRandomName(row.customersId)
+                    row.packagesInfo = row.packages.packageName
+                } else if (row.questionsId != null && row.questionContext !== null) {
+                    row.id = getRandomName(row.questionsId)
+                    row.answeredBy = row.experts?.expertFullName
+                }
+
+            })
+        }
       setisLoaded(true);
   }, []);
     const getRandomName = (hexString) => {
