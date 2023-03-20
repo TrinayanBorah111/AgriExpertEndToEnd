@@ -42,6 +42,7 @@ function DashboardAdmin() {
     const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
+    
     useEffect(() => {
         validateAuthToken();
     }, []);
@@ -58,15 +59,28 @@ function DashboardAdmin() {
         const token = sessionStorage.getItem("authToken");
         let authTokenURL = await Services.authConfigurations.getAuthURL('/expert', token)
         const data = await Services.adminConfigurations.getAllExperts(authTokenURL);
-        setserverResponse(data);
-        setisLoaded(true);
+        if (data == 401 || data == 400 || data == 500) {
+            sessionStorage.clear()
+            navigate(`/admin`)
+        } else {
+            setserverResponse(data);
+            setisLoaded(true);
+        }
+        
+    }
+    const handleRowSeleted = (flag) => {
+        setState({
+            ...state,
+            oneRowSelected:flag,
+        })
     }
   return (
       isLoaded?<>
       <div className="Dashboard">
         <div className="AppGlass">
           <SidebarAdmin />
-                  <Table columns={Expertcolumns} data={serverResponse} />
+                  <Table columns={Expertcolumns} data={serverResponse} rowSeleted={handleRowSeleted} />
+                  
           <div></div>
         </div>
       </div>

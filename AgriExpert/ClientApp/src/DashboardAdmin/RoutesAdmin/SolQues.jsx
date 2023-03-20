@@ -69,8 +69,13 @@ const Solved = () => {
                 data.splice(myIndex, 1);
             }
         }
-        setserverResponse(data);
-        setisLoaded(true);
+        if (data == 401 || data == 400 || data == 500) {
+            sessionStorage.clear()
+            navigate(`/admin`)
+        } else {
+            setserverResponse(data);
+            setisLoaded(true);
+        }
     }
   return (
       isLoaded ?<div className="Dashboard">

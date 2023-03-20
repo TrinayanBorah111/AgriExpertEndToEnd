@@ -17,7 +17,13 @@
             const data = await fetch('/expert', {
                 method: 'GET',
                 headers: authURL
-            }).then(response => response.json())
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+               
+            })
                 .catch((error) => {
                     console.log(error)
                 })
@@ -47,7 +53,13 @@
             const data = await fetch('/customer', {
                 method: 'GET',
                 headers: authURL
-            }).then(response => response.json())
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
                 .catch((error) => {
                     console.log(error)
                 })
@@ -60,7 +72,13 @@
             const data = await fetch('/question', {
                 method: 'GET',
                 headers: authURL
-            }).then(response => response.json())
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
                 .catch((error) => {
                     console.log(error)
                 })
@@ -71,7 +89,13 @@
             const data = await fetch(`/question/expert/${id}`, {
                 method: 'GET',
                 headers: authURL
-            }).then(response => response.json())
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
                 .catch((error) => {
                     console.log(error)
                 })

@@ -52,8 +52,13 @@ const Customers = () => {
         const token = sessionStorage.getItem("authToken");
         let authTokenURL = await Services.authConfigurations.getAuthURL('/customer',token)
         const data = await Services.customerConfigurations.getAllCustomers(authTokenURL);
-        setserverResponse(data);
-        setisLoaded(true);
+        if (data == 401 || data == 400 || data == 500) {
+            sessionStorage.clear()
+            navigate(`/admin`)
+        } else {
+            setserverResponse(data);
+            setisLoaded(true);
+        }
     }
     return (
         isLoaded ?<>

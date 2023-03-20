@@ -59,18 +59,23 @@ const ExpertUnsolvedQuestions = () => {
         const token = sessionStorage.getItem("authExpertToken");
         let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/expert/68db8b52-5fcf-4c73-a47b-d9c239662646`, token)
         let data = await Services.questionConfigurations.getAllQuestionsWithExpertID('68db8b52-5fcf-4c73-a47b-d9c239662646', authTokenURL);
-        data = data.map(value => {
-            if (value.questionStatus == "InProgress")
-                return value;
-        })
-        for (let i = 0; i < data.length; i++) {
-            var myIndex = data.indexOf(undefined);
-            if (myIndex !== -1) {
-                data.splice(myIndex, 1);
+        if (data == 401 || data == 400 || data == 500) {
+            sessionStorage.clear()
+            navigate(`/expertsignin`)
+        } else {
+            data = data.map(value => {
+                if (value.questionStatus == "InProgress")
+                    return value;
+            })
+            for (let i = 0; i < data.length; i++) {
+                var myIndex = data.indexOf(undefined);
+                if (myIndex !== -1) {
+                    data.splice(myIndex, 1);
+                }
             }
+            setserverResponse(data);
+            setisLoaded(true);
         }
-        setserverResponse(data);
-        setisLoaded(true);
     }
   return (
       isLoaded? <div className="Dashboard">
