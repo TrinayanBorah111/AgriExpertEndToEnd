@@ -55,6 +55,13 @@ namespace AgriExpert.Repositories
             return await agriExpertDbContext.Experts
                 .FirstOrDefaultAsync(x => x.ExpertsId == id);
         }
+
+        public async Task<Experts> GetAsyncId(string username,string password)
+        {
+            return await agriExpertDbContext.Experts
+                .FirstOrDefaultAsync(x => x.ExpertUserName == username && x.ExpertPassword == password);
+        }
+
         public async Task<Experts> UpdateAsync(Guid id, Experts experts)
         {
             var existingExpert = await agriExpertDbContext.Experts.FirstOrDefaultAsync(x => x.ExpertsId == id);

@@ -1,49 +1,48 @@
-import "../ComponentsAdmin/RmvExpertsStyles.css";
-import SidebarAdmin from "../Sidebar/Sidebar";
+﻿import React from "react";
+import "../ComponentsAdmin/Inprogress.css";
+import SidebarAdmin from "../Sidebar/Sidebar.jsx";
 import Table from "../Table/Table";
 import Services from '../../Shared/HttpRequests';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 
-const Expertcolumns = [
-    { field: "id", headerName: "Expert ID", width: 180 },
+const InprogressQuestionscolumns = [
+    { field: "id", headerName: "Question ID", width: 180 },
     {
-        field: "expertFullName",
-        headerName: "Full name",
+        field: "questionContext",
+        headerName: "Question Title",
         width: 200,
         editable: true
     },
     {
-        field: "expertUserName",
-        headerName: "User Name",
+        field: "questionStatus",
+        headerName: "Status",
         width: 150,
         editable: true
     },
     {
-        field: "expertPhone",
-        headerName: "Contact",
+        field: "questionAnswer",
+        headerName: "Answer",
         width: 180,
         editable: true
     },
     {
-        field: "expertEmail",
-        headerName: "Email",
-        width: 250,
+        field: "questionTopicName",
+        headerName: "Topic",
+        width: 180,
         editable: true
     },
     {
-        field: "expertStatus",
-        headerName: "Status",
-        width: 110,
+        field: "answeredBy",
+        headerName: "Answered By(Expert)",
+        width: 180,
         editable: true
-    }
+    },
 ];
-
-const RmvExperts = () => {
+const InProgress = () => {
     const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
-
     useEffect(() => {
         validateAuthToken();
     }, []);
@@ -58,14 +57,15 @@ const RmvExperts = () => {
     }
     const fetchResponse = async () => {
         const token = sessionStorage.getItem("authToken");
-        let authTokenURL = await Services.authConfigurations.getAuthURL('/expert', token)
-        let data = await Services.adminConfigurations.getAllExperts(authTokenURL);
+        let authTokenURL = await Services.authConfigurations.getAuthURL('/question', token)
+        let data = await Services.questionConfigurations.getAllQuestions(authTokenURL);
+
         if (data == 401 || data == 400 || data == 500) {
             sessionStorage.clear()
             navigate(`/admin`)
         } else {
             data = data.map(value => {
-                if (value.expertStatus == "Revoked")
+                if (value.questionStatus == "InProgress")
                     return value;
             })
             let len = data.length;
@@ -78,7 +78,6 @@ const RmvExperts = () => {
             setserverResponse(data);
             setisLoaded(true);
         }
-
     }
     const handleRowSeleted = (flag) => {
         setState({
@@ -86,17 +85,14 @@ const RmvExperts = () => {
             oneRowSelected: flag,
         })
     }
-  return (
-      isLoaded ?
-          <div className="Dashboard">
-              <div className="AppGlass">
-                  <SidebarAdmin />
-                  <div>
-                      <Table columns={Expertcolumns} data={serverResponse} role={"Admin"} tab={"RevokeExpert"} rowSeleted={handleRowSeleted} />
-                  </div>
-              </div></div>
-          : <></>
-  );
+    return (
+        isLoaded ?<div className="Dashboard">
+            <div className="AppGlass">
+                <SidebarAdmin />
+                <div><Table columns={InprogressQuestionscolumns} data={serverResponse} role={"Admin"} tab={"InProgress"} rowSeleted={handleRowSeleted} /></div>
+            </div>
+        </div>:<></>
+    );
 };
 
-export default RmvExperts;
+export default InProgress;

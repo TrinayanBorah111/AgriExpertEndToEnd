@@ -1,0 +1,18 @@
+﻿.buttonClass{
+    margin:10px;
+}
+.dialogWrapper {
+    padding: 2px;
+    position: absolute;
+    top: 5px;
+}
+.inputAreaField {
+    margin-top: 7px;
+    width: 100%;
+    height:100px
+}
+.dropdownField {
+    margin-top: 7px;
+    margin-left: 7px;
+    height: 30px
+}

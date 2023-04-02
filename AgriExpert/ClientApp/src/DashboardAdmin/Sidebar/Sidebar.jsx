@@ -108,7 +108,7 @@ function SidebarAdmin() {
               <div className="sjj">
                 <UilUserTimes />
               </div>
-              <span className="sp"> Remove Experts </span>
+              <span className="sp"> Revoked Experts</span>
             </div>
           </a>
 
@@ -138,8 +138,15 @@ function SidebarAdmin() {
               <span className="sp"> Unsolved Questions </span>
             </div>
           </a>
-
-          <div className="signbutton">
+          <a href="/inprogress">
+            <div>
+              <div className="sjj">
+                <UilCommentAltQuestion />
+              </div>
+              <span className="sp"> In progress question </span>
+            </div>
+                  </a>
+                  <div className="signbutton" style={{ marginTop:"0px" }}>
             <a href="/admin" >
               <UilSignOutAlt color="black" />
               <span onClick={handleLogout}> Log Out </span>

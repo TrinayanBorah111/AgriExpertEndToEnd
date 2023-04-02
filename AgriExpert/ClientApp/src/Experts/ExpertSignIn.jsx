@@ -31,6 +31,13 @@ const SignInExpert = () => {
         }
         const data = await Services.expertConfigurations.expertLogIn(obj);
         if (data != "Username and Password incorrect") {
+            let authTokenURL = await Services.authConfigurations.getAuthURL(`/expert/expertId?` +
+                new URLSearchParams({
+                    username: state.userName,
+                    password: state.password,
+            }), data)
+            const expertID = await Services.expertConfigurations.getExpertID(state.userName, state.password, authTokenURL);
+            sessionStorage.setItem('expertlLoggedInId', expertID);
             sessionStorage.setItem('authExpertToken', data)
             navigate(`/dashboardexpert`)
         }
@@ -51,7 +58,7 @@ const SignInExpert = () => {
         </h1>
 
             <Typography variant='h4' fontWeight="bold" color='green' padding={3} textAlign="center">Expert Login</Typography>
-            <TextField margin="normal" type={"email"} variant='outlined' placeholder='Email' onChange={handleUsernameChange}/>
+            <TextField margin="normal" type={"email"} variant='outlined' placeholder='UserName' onChange={handleUsernameChange}/>
             <TextField margin="normal" type={'password'} variant='outlined' placeholder='Password' onChange={handlePasswordChange}/>
             <Button variant="contained" color="success" onClick={loginClick}>Login</Button>
             </Box>

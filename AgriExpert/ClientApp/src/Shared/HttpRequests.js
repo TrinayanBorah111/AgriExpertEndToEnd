@@ -84,6 +84,20 @@
                 })
             return data;
         },
+        async updateQuestionWithID(id, payload, authURL) {
+            const data = await fetch(`/question/${id}`, {
+                method: "put",
+                headers: authURL,
+                body: JSON.stringify(payload)
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((error) => {
+                    return error;
+                })
+            return data;
+        },
         async getAllQuestionsWithExpertID(id, authURL) {
             //GET call
             const data = await fetch(`/question/expert/${id}`, {
@@ -103,6 +117,37 @@
         }
     },
     expertConfigurations: {
+        async updateExpertWithID(id, payload, authURL) {
+            const data = await fetch(`/expert/${id}`, {
+                method: "put",
+                headers: authURL,
+                body: JSON.stringify(payload)
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((error) => {
+                    return error;
+                })
+            return data;
+        },
+        async getExpertData(id, authURL) {
+            //GET call
+            const data = await fetch(`/expert/${id}`, {
+                method: 'GET',
+                headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
         async expertLogIn(payload) {
             const data = await fetch("/Auth/expertlogin", {
                 method: "post",
@@ -119,13 +164,37 @@
                     return error;
                 })
             return data;
+        },
+        async getExpertID(username,password, authURL) {
+            //GET call
+            const data = await fetch(`/expert/expertId?`+ new URLSearchParams({
+                username: username,
+                password: password,
+            }), {
+                method: 'GET',
+                headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
         }
     },
     authConfigurations: {
         async getAuthURL(isApiUrl,token) {
             const isLoggedIn = !!token;
             if (isLoggedIn && isApiUrl) {
-                return { Authorization: `Bearer ${token}` };
+                return {
+                    Authorization: `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                };
             } else {
                 return {};
             }

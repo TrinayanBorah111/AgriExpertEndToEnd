@@ -4,6 +4,8 @@ import Table from "./Table/Table";
 import Services from '../Shared/HttpRequests';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux";
+import ActionCall from "../actions/index";
 
 const Expertcolumns = [
     { field: "id", headerName: "Expert ID", width: 180 },
@@ -40,6 +42,7 @@ const Expertcolumns = [
 ];
 function DashboardAdmin() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [serverResponse, setserverResponse] = useState([]);
     const [isLoaded, setisLoaded] = useState(false);
     
@@ -58,11 +61,23 @@ function DashboardAdmin() {
     const fetchResponse = async () => {
         const token = sessionStorage.getItem("authToken");
         let authTokenURL = await Services.authConfigurations.getAuthURL('/expert', token)
-        const data = await Services.adminConfigurations.getAllExperts(authTokenURL);
+        let data = await Services.adminConfigurations.getAllExperts(authTokenURL);
         if (data == 401 || data == 400 || data == 500) {
             sessionStorage.clear()
             navigate(`/admin`)
         } else {
+            data = data.map(value => {
+                if (value.expertStatus != "Revoked")
+                    return value;
+            })
+            let len = data.length;
+            for (let i = 0; i < len; i++) {
+                var myIndex = data.indexOf(undefined);
+                if (myIndex !== -1) {
+                    data.splice(myIndex, 1);
+                }
+            }
+            dispatch(ActionCall.actionCalls.addExpertDetails(data))
             setserverResponse(data);
             setisLoaded(true);
         }
@@ -75,16 +90,15 @@ function DashboardAdmin() {
         })
     }
   return (
-      isLoaded?<>
+      isLoaded?
       <div className="Dashboard">
         <div className="AppGlass">
-          <SidebarAdmin />
-                  <Table columns={Expertcolumns} data={serverResponse} rowSeleted={handleRowSeleted} />
-                  
-          <div></div>
-        </div>
-      </div>
-    </>:<></>
+                  <SidebarAdmin />
+                  <div>
+                      <Table columns={Expertcolumns} data={serverResponse} role={"Admin"} tab={"Expert"} rowSeleted={handleRowSeleted} />
+                  </div>
+              </div></div>
+    :<></>
   );
 }
 

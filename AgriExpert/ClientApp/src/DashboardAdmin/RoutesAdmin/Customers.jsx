@@ -60,14 +60,22 @@ const Customers = () => {
             setisLoaded(true);
         }
     }
+    const handleRowSeleted = (flag) => {
+        setState({
+            ...state,
+            oneRowSelected: flag,
+        })
+    }
     return (
-        isLoaded ?<>
+        isLoaded ?
     <div className="Dashboard">
       <div className="AppGlass">
-              <SidebarAdmin />
-                    <Table columns={Customerscolumns} data={serverResponse} />
+                    <SidebarAdmin />
+                    <div>
+                        <Table columns={Customerscolumns} data={serverResponse} role={"Admin"} tab={"Customer"} rowSeleted={handleRowSeleted} />
+                    </div>
       </div>
-    </div></>:<></>
+    </div>:<></>
   );
 };
 

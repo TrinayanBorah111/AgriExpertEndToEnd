@@ -16,7 +16,7 @@ const SolvedQuestionscolumns = [
     {
         field: "questionStatus",
         headerName: "Status",
-        width: 180,
+        width: 150,
         editable: true
     },
     {
@@ -59,29 +59,39 @@ const Solved = () => {
         const token = sessionStorage.getItem("authToken");
         let authTokenURL = await Services.authConfigurations.getAuthURL('/question', token)
         let data = await Services.questionConfigurations.getAllQuestions(authTokenURL);
-        data = data.map(value => {
-            if (value.questionStatus == "Answered")
-                return value;
-        })
-        for (let i = 0; i < data.length; i++) {
-            var myIndex = data.indexOf(undefined);
-            if (myIndex !== -1) {
-                data.splice(myIndex, 1);
-            }
-        }
+        
         if (data == 401 || data == 400 || data == 500) {
             sessionStorage.clear()
             navigate(`/admin`)
         } else {
+            data = data.map(value => {
+                if (value.questionStatus == "Answered")
+                    return value;
+            })
+            let len = data.length;
+            for (let i = 0; i <= len; i++) {
+                var myIndex = data.indexOf(undefined);
+                if (myIndex !== -1) {
+                    data.splice(myIndex, 1);
+                }
+            }
             setserverResponse(data);
             setisLoaded(true);
         }
+    }
+    const handleRowSeleted = (flag) => {
+        setState({
+            ...state,
+            oneRowSelected: flag,
+        })
     }
   return (
       isLoaded ?<div className="Dashboard">
       <div className="AppGlass">
               <SidebarAdmin />
-              <Table columns={SolvedQuestionscolumns} data={serverResponse} />
+              <div>
+                  <Table columns={SolvedQuestionscolumns} data={serverResponse} role={"Admin"} tab={"Solved"} rowSeleted={handleRowSeleted} />
+                  </div>
       </div>
     </div>:<></>
   );

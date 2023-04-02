@@ -33,6 +33,18 @@ namespace AgriExpert.Controllers
             return Ok(expertsDTO);
         }
         [HttpGet]
+        [Route("expertId")]
+        [Authorize(Roles = "Admin,Expert")]
+        public async Task<IActionResult> GetExpertId(string username,string password)
+        {
+            //Fetch data from database
+            var experts = await expertRepository.GetAsyncId(username,password);
+            //Convert data to DTO
+            var expertsDTO = mapper.Map<Models.DTO.Experts>(experts);
+            //Return response
+            return Ok(expertsDTO.ExpertsId);
+        }
+        [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetExpertAsync")]
         //[Authorize(Roles = "Admin,Expert")]
