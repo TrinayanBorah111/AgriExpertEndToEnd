@@ -42,7 +42,7 @@ namespace AgriExpert.Controllers
             //Convert data to DTO
             var expertsDTO = mapper.Map<Models.DTO.Experts>(experts);
             //Return response
-            return Ok(expertsDTO.ExpertsId);
+            return Ok(expertsDTO);
         }
         [HttpGet]
         [Route("{id:guid}")]

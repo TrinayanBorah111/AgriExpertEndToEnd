@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
 
 namespace AgriExpert.Models.DTO
 {
@@ -11,6 +13,8 @@ namespace AgriExpert.Models.DTO
         public string QuestionTopicAge { get; set; }
         public string QuestionTopicOtherDetails { get; set; }
         public string QuestionTopicImages { get; set; }
+        public IFormFile QuestionTopicImage { get; set; }
+        //public List<IFormFile> QuestionTopicImage { get; set; }
         public Guid CustomersId { get; set; }
     }
 }

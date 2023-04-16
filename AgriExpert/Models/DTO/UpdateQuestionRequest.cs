@@ -13,6 +13,7 @@ namespace AgriExpert.Models.DTO
         public string QuestionTopicAge { get; set; }
         public string QuestionTopicOtherDetails { get; set; }
         public string QuestionTopicImages { get; set; }
+        public string QuestionFeedback { get; set; }
         public Guid ExpertsId { get; set; }
     }
 }

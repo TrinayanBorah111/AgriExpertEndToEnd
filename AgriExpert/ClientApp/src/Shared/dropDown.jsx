@@ -35,7 +35,7 @@ const DropdownButton = (props) => {
         padding: '0.5rem',
         fontSize: '1rem',
         fontWeight: 'bold',
-        backgroundColor: selectedOption == 'Online' ? 'green' : 'grey',
+        backgroundColor: (props.expertData.expertStatus == 'Online' || selectedOption == 'Online') ? 'green' : 'grey',
         boxShadow: '0 2px 2px rgba(0, 0, 0, 0.3)',
         appearance: 'none',
         outline: 'none',

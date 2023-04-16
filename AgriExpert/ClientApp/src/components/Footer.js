@@ -59,7 +59,16 @@ function Footer() {
               LinkedIn
             </FooterLink>
           </FooterLinksItems>
-        </FooterLinksWrapper>
+         </FooterLinksWrapper>
+              <FooterLinksWrapper>
+                  <FooterLinksItems>
+                      <FooterLinksTitle>Polices and Conditions</FooterLinksTitle>
+                      <FooterLink href="https://merchant.razorpay.com/policy/LcQud8C3a8tiSM/refund">Refund policy</FooterLink>
+                      <FooterLink href="https://merchant.razorpay.com/policy/LcQud8C3a8tiSM/shipping">Shipping policy</FooterLink>
+                      <FooterLink href="https://merchant.razorpay.com/policy/LcQud8C3a8tiSM/privacy">Privacy policy</FooterLink>
+                      <FooterLink href="https://merchant.razorpay.com/policy/LcQud8C3a8tiSM/terms">Terms & Conditions</FooterLink>
+                  </FooterLinksItems>
+              </FooterLinksWrapper>
       </FooterLinksContainer>
       <SocialMedia>
         <SocialMediaWrap>

@@ -9,6 +9,7 @@ namespace AgriExpert.Repositories
     {
         Task<IEnumerable<Questions>> GetAllAsync();
         Task<IEnumerable<Questions>> GetAllAsyncExpertId(Guid id);
+        Task<IEnumerable<Questions>> GetAllAsyncCustomerId(Guid id);
         Task<Questions> GetAsync(Guid id);
         Task<Questions> AddAsync(Questions question);
         Task<Questions> UpdateAsync(Guid id, Questions question);

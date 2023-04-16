@@ -13,7 +13,7 @@ export default function DataGridDemo(props) {
   const [isLoaded, setisLoaded] = useState(false);
     useEffect(() => {
         columns = props.columns;
-        rows = props.data[0] == undefined ? [] : props.data; 
+        rows = props.data[0] == undefined ? [] : props.data;
         if (rows.length > 0) {
             rows.map(row => {
                 if (row.role == "Expert") {
@@ -42,7 +42,12 @@ export default function DataGridDemo(props) {
     })
     const getButtonName = (role, tab) => {
         if (role == "Expert") {
-            return tab == "Solved" ? "View Answer" : "Update Answer";
+            if (tab == "Solved")
+                return "View Answer";
+            if (tab == "UnSolved")
+                return "Update Answer";
+            if (tab == "InProgress")
+                return "Recheck Answer"
         }
         else if (role == "Admin") {
             if (tab == "Expert")
@@ -55,18 +60,23 @@ export default function DataGridDemo(props) {
                 return "View Answer";
             if (tab == "Customer")
                 return "Check Details"
-        }   
+            if (tab == "InProgress")
+                return "Review Answer"
+        } else if (role == "Customer") {
+            if (tab == "UnSolved")
+                return "View Question"
+            if (tab == "Solved")
+                return "View Answer"
+        }
     }
     const getHeaderName = (role, tab) => {
         if (role == "Expert") {
             if (tab == "Solved")
-                return (
-                   <span> Solved Questions</span>
-                )
+                return <span> Solved Questions</span>
             if (tab == "UnSolved")
-                return (
-                    <span> Un-Solved Questions</span>
-                )
+                return <span> Un-Solved Questions</span>
+            if (tab == "InProgress")
+                return <span> In-Progress Questions</span>
         }
         else if (role == "Admin") {
             if (tab == "Expert")
@@ -81,45 +91,60 @@ export default function DataGridDemo(props) {
                 return <span>All Cutomers</span>
             if (tab == "InProgress")
                 return <span>In-Progress Questions</span>
+        } else if (role == "Customer") {
+            if (tab == "UnSolved")
+                return <span> Un-Solved Questions</span>
+            if (tab == "Solved")
+                return <span> Solved Questions</span>
         }
     }
     const viewButtonClick = async () => {
-        if (props.role == "Expert") {
-            if (props.tab == "Solved") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
-            } else if (props.tab == "UnSolved") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
-            }
-        } else if (props.role == "Admin") {
-            if (props.tab == "Expert" || props.tab == "RevokeExpert") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
-            } else if (props.tab == "Unsolved") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
+        setState({
+            ...state,
+            buttonClicked: true,
+        })
+        //if (props.role == "Expert") {
+        //    if (props.tab == "Solved") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    } else if (props.tab == "UnSolved") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    }
+        //} else if (props.role == "Admin") {
+        //    if (props.tab == "Expert" || props.tab == "RevokeExpert") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    } else if (props.tab == "Unsolved") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
 
-            } else if (props.tab == "Solved") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
-            } else if (props.tab == "Customer") {
-                setState({
-                    ...state,
-                    buttonClicked: true,
-                })
-            }
-        }
+        //    } else if (props.tab == "Solved") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    } else if (props.tab == "Customer") {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    } else if (props.tab == 'InProgress') {
+        //        setState({
+        //            ...state,
+        //            buttonClicked: true,
+        //        })
+        //    }
+            
+        //}
     }
     const handleClose = () => {
         setState({

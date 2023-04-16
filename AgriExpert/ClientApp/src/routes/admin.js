@@ -3,6 +3,7 @@ import { GiFallingLeaf } from "react-icons/gi";
 import { useState, useEffect } from 'react';
 import Services from '../Shared/HttpRequests';
 import { useNavigate } from "react-router-dom"
+import '../Experts/DashboardExpert.css'
 
 function Admin() {
     const navigate = useNavigate();
@@ -42,16 +43,17 @@ function Admin() {
           </logo-icon>
           <h1>Admin Sign In</h1>
                   <form>
-                      <input type="username" placeholder="Username" value={state.userName} onChange={handleUsernameChange} />
+                      <input type="text" placeholder="Username" value={state.userName} onChange={handleUsernameChange} />
                       <input type="password" placeholder="Password" value={state.password} onChange={handlePasswordChange} />
               <button className="modalBtn" type="button" onClick={loginClick}>
                 SignIn
               </button>
           </form>
 
-         <a href = "https://toggle10.in/"
-         target='_blank' className="toggle">Powered By @TOGGLE10
-         </a> 
+                  <div style={{ marginTop: "30px" }}> <a  href = "https://toggle10.in/"
+                    target='_blank' className="toggle">Powered By @TOGGLE10
+                  </a>
+                  </div>
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-.Dashboard {
+﻿.Dashboard {
     background: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
     display: flex;
     height: 100vh;
@@ -33,15 +33,7 @@
     width: 100%;
     max-width: 300px;
 }
-input[type='password'] {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
+
 .op {
     width: 80% !important;
     max-width: 300px;

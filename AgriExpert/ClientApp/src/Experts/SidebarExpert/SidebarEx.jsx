@@ -88,7 +88,14 @@ function SidebarEx() {
               <span className="sp"> Solved Questions </span>
             </div>
           </a>
-
+            <a href="/expertinprogess">
+            <div>
+              <div className="sjj">
+                <UilUserCheck />
+              </div>
+              <span className="sp"> InProgress Questions </span>
+            </div>
+          </a>
           <a href="/expertunsolved">
             <div>
               <div className="sjj">

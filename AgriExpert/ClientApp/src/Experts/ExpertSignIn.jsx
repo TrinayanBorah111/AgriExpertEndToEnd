@@ -4,13 +4,15 @@ import { GiFallingLeaf } from "react-icons/gi";
 import Services from '../Shared/HttpRequests';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
+import './DashboardExpert.css'
 
 
 const SignInExpert = () => {
     const navigate = useNavigate();
     const [state, setState] = useState({
         userName: "",
-        password: ""
+        password: "",
+        revoked: false,
     });
     const handleUsernameChange = (e) => {
         setState({
@@ -36,10 +38,18 @@ const SignInExpert = () => {
                     username: state.userName,
                     password: state.password,
             }), data)
-            const expertID = await Services.expertConfigurations.getExpertID(state.userName, state.password, authTokenURL);
-            sessionStorage.setItem('expertlLoggedInId', expertID);
-            sessionStorage.setItem('authExpertToken', data)
-            navigate(`/dashboardexpert`)
+            const expertData = await Services.expertConfigurations.getExpertID(state.userName, state.password, authTokenURL);
+            if (expertData.expertStatus !== "Revoked") {
+                sessionStorage.setItem('expertlLoggedInId', expertData.expertsId);
+                sessionStorage.setItem('authExpertToken', data)
+                navigate(`/dashboardexpert`)
+            } else {
+                setState({
+                    ...state,
+                    revoked:true
+                })
+            }
+            
         }
     }
   return (
@@ -58,9 +68,10 @@ const SignInExpert = () => {
         </h1>
 
             <Typography variant='h4' fontWeight="bold" color='green' padding={3} textAlign="center">Expert Login</Typography>
-            <TextField margin="normal" type={"email"} variant='outlined' placeholder='UserName' onChange={handleUsernameChange}/>
+            <TextField margin="normal" type={"text"} variant='outlined' placeholder='UserName' onChange={handleUsernameChange}/>
             <TextField margin="normal" type={'password'} variant='outlined' placeholder='Password' onChange={handlePasswordChange}/>
             <Button variant="contained" color="success" onClick={loginClick}>Login</Button>
+             {state.revoked? <p>Your account has been revoked!</p>:<></> }
             </Box>
         </form>
     </div>

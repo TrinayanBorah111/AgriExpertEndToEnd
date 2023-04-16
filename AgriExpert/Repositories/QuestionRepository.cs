@@ -22,6 +22,7 @@ namespace AgriExpert.Repositories
             question.QuestionsId = Guid.NewGuid();
             question.QuestionAnswer = "-";
             question.QuestionStatus = "NotAnswered";
+            question.QuestionFeedback= "-";
             await agriExpertDbContext.AddAsync(question);
             await agriExpertDbContext.SaveChangesAsync();
             return question;
@@ -56,7 +57,15 @@ namespace AgriExpert.Repositories
 
 
         }
+        public async Task<IEnumerable<Questions>> GetAllAsyncCustomerId(Guid id)
+        {
+            return await agriExpertDbContext.Questions
+            .Include(x => x.Customers)
+            .Include(x => x.Experts)
+            .Where(x => x.CustomersId == id).ToListAsync();
 
+
+        }
         public async Task<Questions> GetAsync(Guid id)
         {
             return await agriExpertDbContext.Questions
@@ -81,6 +90,7 @@ namespace AgriExpert.Repositories
             existingQuestion.QuestionContext = question.QuestionContext;
             existingQuestion.QuestionStatus = question.QuestionStatus;
             existingQuestion.QuestionAnswer = question.QuestionAnswer;
+            existingQuestion.QuestionFeedback = question.QuestionFeedback;
             existingQuestion.ExpertsId = question.ExpertsId;
             await agriExpertDbContext.SaveChangesAsync();
             return existingQuestion;

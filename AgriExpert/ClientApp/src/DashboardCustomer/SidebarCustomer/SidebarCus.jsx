@@ -1,6 +1,6 @@
 import "../SidebarCustomer/SidebarCus.css";
 import { GiFallingLeaf } from "react-icons/gi";
-import { UilSignOutAlt, UilBars } from "@iconscout/react-unicons";
+import { UilSignOutAlt, UilBars, UilShoppingCart } from "@iconscout/react-unicons";
 
 import {
   UilUserCheck,
@@ -125,7 +125,14 @@ function SidebarCus() {
               <span className="sp"> Subscription </span>
             </div>
           </a>
-
+            <a href="/orders">
+            <div>
+              <div className="sjj">
+                <UilShoppingCart />
+              </div>
+              <span className="sp"> Orders </span>
+            </div>
+          </a>
           <div className="signbutton">
             <a href="/signup">
               <UilSignOutAlt color="black" />

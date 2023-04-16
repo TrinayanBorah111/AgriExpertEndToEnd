@@ -70,6 +70,7 @@ function Pricing() {
                                         )}
 
                                         <Button primary>Choose Plan</Button>
+
                                     </PricingCardInfo>
                                 </PricingCard>
                             )};

@@ -5,7 +5,7 @@ import Table from "../DashboardAdmin/Table/Table";
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom"
 
-const SolvedQuestionscolumns = [
+const UnSolvedQuestionscolumns = [
     { field: "id", headerName: "Question ID", width: 180 },
     {
         field: "questionContext",
@@ -16,7 +16,7 @@ const SolvedQuestionscolumns = [
     {
         field: "questionStatus",
         headerName: "Status",
-        width: 180,
+        width: 150,
         editable: true
     },
     {
@@ -66,7 +66,7 @@ const ExpertUnsolvedQuestions = () => {
             navigate(`/expertsignin`)
         } else {
             data = data.map(value => {
-                if (value.questionStatus == "InProgress")
+                if (value.questionStatus == "InProgress" && value.questionAnswer == "-")
                     return value;
             })
             let len = data.length;
@@ -87,7 +87,7 @@ const ExpertUnsolvedQuestions = () => {
       isLoaded? <div className="Dashboard">
       <div className="AppGlass">
               <SidebarEx /><div>
-                  <Table columns={SolvedQuestionscolumns} data={serverResponse} role={"Expert"} tab={"UnSolved"} expertData={expertData} />
+                  <Table columns={UnSolvedQuestionscolumns} data={serverResponse} role={"Expert"} tab={"UnSolved"} expertData={expertData} />
               </div>
               </div>
     </div>:<></>

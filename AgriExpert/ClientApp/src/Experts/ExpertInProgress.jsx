@@ -1,11 +1,11 @@
+﻿import { useState, useEffect } from 'react';
 import React from 'react'
 import SidebarEx from './SidebarExpert/SidebarEx'
+import { useNavigate } from "react-router-dom"
 import Services from '../Shared/HttpRequests';
 import Table from "../DashboardAdmin/Table/Table";
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 
-const SolvedQuestionscolumns = [
+const InProgressQuestionscolumns = [
     { field: "id", headerName: "Question ID", width: 180 },
     {
         field: "questionContext",
@@ -33,13 +33,12 @@ const SolvedQuestionscolumns = [
     },
     {
         field: "answeredBy",
-        headerName: "Answered By(Expert)",
+        headerName: "Assigned To(Expert)",
         width: 180,
         editable: true
     },
 ];
-
-const DashboardExpert = () => {
+const ExpertInprogressQuestions = () => {
     const navigate = useNavigate();
     const [serverResponse, setserverResponse] = useState([]);
     const [expertData, setexpertData] = useState([]);
@@ -66,7 +65,7 @@ const DashboardExpert = () => {
             navigate(`/expertsignin`)
         } else {
             data = data.map(value => {
-                if (value.questionStatus == "Answered")
+                if (value.questionStatus == "InProgress" && value.questionAnswer !== "-")
                     return value;
             })
             let len = data.length;
@@ -83,18 +82,15 @@ const DashboardExpert = () => {
             setisLoaded(true);
         }
     }
-  return (
-      isLoaded? <div className="Dashboard">
-      <div className="AppGlass">
-              <SidebarEx />
-              
-              <div>
-              <Table columns={SolvedQuestionscolumns} data={serverResponse} role={"Expert"} tab={"Solved"} expertData={expertData} />
-        </div>
-        
-      </div >
-    </div >:<></>
-  )
+    return (
+        isLoaded ? <div className="Dashboard">
+            <div className="AppGlass">
+                <SidebarEx /><div>
+                    <Table columns={InProgressQuestionscolumns} data={serverResponse} role={"Expert"} tab={"InProgress"} expertData={expertData} />
+                </div>
+            </div>
+        </div> : <></>
+    )
 }
 
-export default DashboardExpert
+export default ExpertInprogressQuestions

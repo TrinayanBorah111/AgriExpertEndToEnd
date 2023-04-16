@@ -11,7 +11,9 @@ const PopUp = (props) => {
         questionAnswer: props.selectedRow.questionAnswer,
         questionStatus: props.selectedRow.questionStatus,
         assignedExpertId: props.selectedRow.expertsId,
-        anyUpdate:false,
+        questionFeedback: props.selectedRow.questionFeedback,
+        anyUpdate: false,
+        editAnswer: false,
     })
     const [questionPending, setquestionPending] = React.useState(0);
     const expertList = useSelector((state) => state.expertDetails)
@@ -30,10 +32,17 @@ const PopUp = (props) => {
             anyUpdate:true
         });
     }
+    const handleQuestonFeedback = (e) => {
+        setState({
+            ...state,
+            questionFeedback: e.target.value,
+            anyUpdate:true
+        });
+    }
     const handleUpdate = async () => {
         let obj = {
             "questionContext": props.selectedRow.questionContext,
-            "questionStatus": state.questionStatus,
+            "questionStatus": "InProgress",
             "questionAnswer": state.questionAnswer,
             "questionTopicName": props.selectedRow.questionTopicName,
             "questionsTopicVariety": props.selectedRow.questionsTopicVariety,
@@ -41,6 +50,7 @@ const PopUp = (props) => {
             "questionTopicAge": props.selectedRow.questionTopicAge,
             "questionTopicOtherDetails": props.selectedRow.questionTopicOtherDetails,
             "questionTopicImages": props.selectedRow.questionTopicImages,
+            "questionFeedback": props.selectedRow.questionFeedback,
             "expertsId": props.selectedRow.experts.expertsId
         }
         const token = sessionStorage.getItem("authExpertToken");
@@ -76,10 +86,31 @@ const PopUp = (props) => {
             "questionTopicAge": props.selectedRow.questionTopicAge,
             "questionTopicOtherDetails": props.selectedRow.questionTopicOtherDetails,
             "questionTopicImages": props.selectedRow.questionTopicImages,
+            "questionFeedback": props.selectedRow.questionFeedback,
             "expertsId": state.assignedExpertId
         }
         const token = sessionStorage.getItem("authToken");
-        let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/expert/${state.assignedExpertId}`, token)
+        let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/${state.assignedExpertId}`, token)
+        await Services.questionConfigurations.updateQuestionWithID(props.selectedRow.questionsId, obj, authTokenURL)
+        props.handleClose()
+        window.location.reload();
+    }
+    const handleUpdateApprove = async () => {
+        let obj = {
+            "questionContext": props.selectedRow.questionContext,
+            "questionStatus": "Answered",
+            "questionAnswer": props.selectedRow.questionAnswer,
+            "questionTopicName": props.selectedRow.questionTopicName,
+            "questionsTopicVariety": props.selectedRow.questionsTopicVariety,
+            "questionTopicGrowingSeason": props.selectedRow.questionTopicGrowingSeason,
+            "questionTopicAge": props.selectedRow.questionTopicAge,
+            "questionTopicOtherDetails": props.selectedRow.questionTopicOtherDetails,
+            "questionTopicImages": props.selectedRow.questionTopicImages,
+            "questionFeedback": props.selectedRow.questionFeedback,
+            "expertsId": props.selectedRow.experts.expertsId
+        }
+        const token = sessionStorage.getItem("authToken");
+        let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/${props.selectedRow.experts.expertsId}`, token)
         await Services.questionConfigurations.updateQuestionWithID(props.selectedRow.questionsId, obj, authTokenURL)
         props.handleClose()
         window.location.reload();
@@ -87,6 +118,7 @@ const PopUp = (props) => {
     const handleExpertChange = async (event) => {
         setState({
             ...state,
+            anyUpdate: event.target.value=="SelectExpert"?false:true,
             assignedExpertId: event.target.value
         })
         const token = sessionStorage.getItem("authToken");
@@ -100,6 +132,32 @@ const PopUp = (props) => {
         }).length;
         setquestionPending(questionCount)
     }
+    const handleEditAnswerClick = () => {
+        setState({
+            ...state,
+            editAnswer: true,
+        });
+    }
+    const handleUpdateFeedback = async () => {
+        let obj = {
+            "questionContext": props.selectedRow.questionContext,
+            "questionStatus": "InProgress",
+            "questionAnswer": props.selectedRow.questionAnswer,
+            "questionTopicName": props.selectedRow.questionTopicName,
+            "questionsTopicVariety": props.selectedRow.questionsTopicVariety,
+            "questionTopicGrowingSeason": props.selectedRow.questionTopicGrowingSeason,
+            "questionTopicAge": props.selectedRow.questionTopicAge,
+            "questionTopicOtherDetails": props.selectedRow.questionTopicOtherDetails,
+            "questionTopicImages": props.selectedRow.questionTopicImages,
+            "questionFeedback": state.questionFeedback,
+            "expertsId": props.selectedRow.experts.expertsId
+        }
+        const token = sessionStorage.getItem("authToken");
+        let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/${props.selectedRow.experts.expertsId}`, token)
+        await Services.questionConfigurations.updateQuestionWithID(props.selectedRow.questionsId, obj, authTokenURL)
+        props.handleClose()
+        window.location.reload();
+    }
     const checkTabType = () => {
         if (props.role == "Expert") {
             if (props.tab == "Solved") {
@@ -111,7 +169,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-
+                        <img src={require('../assets/sample.jpg')} />
                     </>
                 )
             } else if (props.tab == "UnSolved") {
@@ -120,7 +178,7 @@ const PopUp = (props) => {
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b></div>
                         <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
-                        <div>
+                        {/*<div>
                             <b>{"Question Status: "}</b>
                             <select className="dropdownField" onChange={handleQuestionStatusChange} value={state.questionStatus}>
                                 <option key={1} value={"InProgress"}>
@@ -131,7 +189,30 @@ const PopUp = (props) => {
                                 </option>
                                 ))
                             </select>
-                        </div>
+                        </div>*/}
+                    </>
+                )
+            } else if (props.tab == "InProgress") {
+                return (
+                    <>
+                        <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
+                        <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
+                        <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
+                        <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
+
+                        {props.selectedRow.questionFeedback !== "-" ?
+                            <div style={{ color: '#FF6A00' }}><b>{"Feedback by Admin: "}</b> {props.selectedRow.questionFeedback}
+                                <Button variant="outlined" onClick={handleEditAnswerClick} style={{ float: 'right' }}>Edit Answer</Button></div>
+                            :
+                            <div><b>{"Feedback by Admin: "}</b>{"(No Feedback yet)"}</div>}
+                        {state.editAnswer ? <div style={{ marginTop: '7px' }}>
+
+                            <div><b>{"Update Answer: "}</b></div>
+                            <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
+
+                        </div> : <></>}
+                        <img style={{ marginTop: "10px" }} src={require('../assets/sample.jpg')} />
                     </>
                 )
             }
@@ -154,6 +235,9 @@ const PopUp = (props) => {
                         <div>
                             <b>{"Experts List: "}</b>
                             <select className="dropdownField" onChange={() => { handleExpertChange(event) }} value={state.assignedExpertId}>
+                                <option key={"SelectExpert"} value={"SelectExpert"}>
+                                    Select Expert
+                                </option>
                                 {expertList.map((option) => (
                                     <option key={option.expertsId} value={option.expertsId}>
                                         {option.expertFullName}
@@ -175,7 +259,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-
+                        <img src={require('../assets/sample.jpg')} />
                     </>
                 )
             } else if (props.tab == "Customer") {
@@ -189,6 +273,47 @@ const PopUp = (props) => {
                         <div><b>{"Plan Type: "}</b> {props.selectedRow.packages.packageType}</div>
                         <div><b>{"Plan Description: "}</b> {props.selectedRow.packages.packageDescription}</div>
 
+                    </>
+                )
+            } else if (props.tab == "InProgress") {
+                return (
+                    <>
+                        <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
+                        <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
+                        <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
+                        <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
+                        <div><b>{"Give Feedback: "}</b>
+                            <textarea className='inputAreaField1' placeholder="Give Feedback" onChange={() => handleQuestonFeedback(event)} value={state.questionFeedback} />
+                        </div>
+                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
+                        <img src={require('../assets/sample.jpg')} />
+                    </>
+                )
+            }
+        }
+        else if (props.role == "Customer") {
+            if (props.tab == "Solved") {
+                return (
+                    <>
+                        <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
+                        <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
+                        <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
+                        <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
+                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
+                        <img src={require('../assets/sample.jpg')} />
+                    </>
+                )
+            }
+            if (props.tab == "UnSolved") {
+                return (
+                    <>
+                        <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
+                        <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
+                        <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
+                        <img src={require('../assets/sample.jpg')} />
                     </>
                 )
             }
@@ -211,10 +336,13 @@ const PopUp = (props) => {
                 <p style={{ float: 'left', fontSize: '12px' }}>{ props.role == 'Expert'?"Asked by- "+props.selectedRow.customers.customerName:""}</p>
                 {props.role == 'Admin' && props.tab == 'Solved' ? <p style={{ float: 'left', fontSize: '12px' }}>{"Answered by- " + props.selectedRow.experts.expertFullName}</p>:<></>}
                 <Button variant="contained" color="success" onClick={props.handleClose} style={{ float: 'right', marginLeft: '10px' }}>Close</Button>
-                {props.tab == "UnSolved" ? <Button disabled={!state.anyUpdate} variant="contained" onClick={handleUpdate} color="success" style={{ float: 'right' }}>Update</Button> : <></>}
+                {props.role == 'Expert' && props.tab == "UnSolved" ? <Button disabled={!state.anyUpdate} variant="contained" onClick={handleUpdate} color="success" style={{ float: 'right' }}>Update</Button> : <></>}
+                {props.role == 'Expert' && props.tab == "InProgress" && state.editAnswer == true ? <Button disabled={!state.anyUpdate} variant="contained" onClick={handleUpdate} color="success" style={{ float: 'right' }}>Update</Button> : <></>}
                 {props.role == 'Admin' && props.tab == "Expert" ? <Button variant="contained" onClick={() => handleUpdateStatus("Revoked")} color="error" style={{ float: 'right' }}>Revoke</Button> : <></>}
                 {props.role == 'Admin' && props.tab =='RevokeExpert'? <Button variant="contained" onClick={() => handleUpdateStatus("-")} color="success" style={{ float: 'right' }}>Reactive</Button>:<></>}
-                {props.role == 'Admin' && props.tab == 'Unsolved' ? <Button variant="contained" onClick={handleUpdateAssign} color="success" style={{ float: 'right' }}>Assign</Button> : <></>}
+                {props.role == 'Admin' && props.tab == 'Unsolved' ? <Button variant="contained" disabled={!state.anyUpdate} onClick={handleUpdateAssign} color="success" style={{ float: 'right' }}>Assign</Button> : <></>}
+                {props.role == 'Admin' && props.tab == 'InProgress' && state.anyUpdate == false ? <Button variant="contained" onClick={handleUpdateApprove} color="success" style={{ float: 'right' }}>Approve</Button> : <></>}
+                {props.role == 'Admin' && props.tab == 'InProgress' && state.anyUpdate == true? <Button variant="contained" onClick={handleUpdateFeedback} color="success" style={{ float: 'right' }}>Submit Feedback</Button>:<></>}
             </div>
         </Dialog>
     );

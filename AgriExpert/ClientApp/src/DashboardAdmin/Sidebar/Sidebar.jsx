@@ -143,7 +143,7 @@ function SidebarAdmin() {
               <div className="sjj">
                 <UilCommentAltQuestion />
               </div>
-              <span className="sp"> In progress question </span>
+              <span className="sp"> InProgress Questions </span>
             </div>
                   </a>
                   <div className="signbutton" style={{ marginTop:"0px" }}>

@@ -6,26 +6,34 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace AgriExpert.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class QuestionController : Controller
     {
         private readonly IQuestionRepository questionRepository;
         private readonly IMapper mapper;
         private readonly ICustomerRepository customerRepository;
         private readonly IExpertRepository expertRepository;
+        private readonly IWebHostEnvironment hostEnvironment;
 
         public QuestionController(IQuestionRepository questionRepository, IMapper mapper,
-            ICustomerRepository customerRepository, IExpertRepository expertRepository)
+            ICustomerRepository customerRepository, IExpertRepository expertRepository, IWebHostEnvironment hostEnvironment)
         {
             this.questionRepository = questionRepository;
             this.mapper = mapper;
             this.customerRepository = customerRepository;
             this.expertRepository = expertRepository;
+            this.hostEnvironment = hostEnvironment;
         }
         [HttpGet]
         //[Authorize(Roles = "Expert,Admin")]
@@ -66,15 +74,33 @@ namespace AgriExpert.Controllers
             return Ok(questionDTO);
 
         }
+        [HttpGet]
+        [Route("customer/{id:guid}")]
+        [ActionName("GetQuestionAsync")]
+        //[Authorize(Roles = "Expert,Admin")]
+        public async Task<IActionResult> GetAllAsyncCustomerId(Guid id)
+        {
+            //Fetch data from database
+            var questions = await questionRepository.GetAllAsyncCustomerId(id);
+            //Convert data to DTO
+            var questionDTO = mapper.Map<List<Models.DTO.Questions>>(questions);
+            //Return response
+            return Ok(questionDTO);
+
+        }
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddQuestionAsync([FromBody] Models.DTO.AddQuestionRequest addQuestionRequest)
+        public async Task<IActionResult> AddQuestionAsync([FromForm] Models.DTO.AddQuestionRequest addQuestionRequest)
         {
+            
             //Vaidate Add question Field
             if (!await ValidateAddQuestionAsync(addQuestionRequest))
             {
                 return BadRequest(ModelState);
             }
+            Console.WriteLine(addQuestionRequest.QuestionTopicImage);
+            //addQuestionRequest.QuestionTopicImages = 
+            string path =    await SaveImageAlt(addQuestionRequest.QuestionTopicImage, addQuestionRequest.CustomersId.ToString());
             //Convert DTO to domain object
             var question = new Models.Forum.Questions
             {
@@ -83,7 +109,7 @@ namespace AgriExpert.Controllers
                 QuestionsTopicVariety = addQuestionRequest.QuestionsTopicVariety,
                 QuestionTopicAge = addQuestionRequest.QuestionTopicAge,
                 QuestionTopicGrowingSeason = addQuestionRequest.QuestionTopicGrowingSeason,
-                QuestionTopicImages = addQuestionRequest.QuestionTopicImages,
+                QuestionTopicImages = path,
                 QuestionTopicOtherDetails = addQuestionRequest.QuestionTopicOtherDetails,
                 CustomersId = addQuestionRequest.CustomersId,
             };
@@ -106,6 +132,7 @@ namespace AgriExpert.Controllers
             };
             //Send DTO back to client
             return CreatedAtAction(nameof(GetQuestionAsync), new { id = questionDTO.QuestionsId }, questionDTO);
+            
         }
         [HttpPut]
         [Route("{id:guid}")]
@@ -128,6 +155,7 @@ namespace AgriExpert.Controllers
                 QuestionContext = updateQuestionRequest.QuestionContext,
                 QuestionStatus = updateQuestionRequest.QuestionStatus,
                 QuestionAnswer = updateQuestionRequest.QuestionAnswer,
+                QuestionFeedback = updateQuestionRequest.QuestionFeedback,
                 ExpertsId = updateQuestionRequest.ExpertsId,
             };
             //Update question using repository
@@ -150,6 +178,7 @@ namespace AgriExpert.Controllers
                 QuestionContext = question.QuestionContext,
                 QuestionStatus = question.QuestionStatus,
                 QuestionAnswer = question.QuestionAnswer,
+                QuestionFeedback= question.QuestionFeedback,
                 ExpertsId = (Guid)question.ExpertsId,
             };
 
@@ -180,13 +209,57 @@ namespace AgriExpert.Controllers
                 QuestionContext = question.QuestionContext,
                 QuestionStatus = question.QuestionStatus,
                 QuestionAnswer = question.QuestionAnswer,
+                QuestionFeedback = question.QuestionFeedback,
                 CustomersId = question.CustomersId,
             };
 
             //return Ok Response
             return Ok(questionDTO);
         }
+        //[NonAction]
+        //public async Task<string> SaveImage(IFormFile imageFile)
+        //{
+        //    string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+        //    imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+        //    var imagePath = Path.Combine(hostEnvironment.ContentRootPath, "Images", imageName);
+        //    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+        //    {
+        //        await imageFile.CopyToAsync(fileStream);
+        //    }
+        //    return imageName;
+        //}
+        [NonAction]
+        public async Task<string> SaveImageAlt(IFormFile file, string customerId)
+        {
+            try
+            {
+                //string pathList = "";
+                string subPath = "Images\\"+customerId.ToString(); // Your code goes here
+                bool exists = Directory.Exists((subPath));
+                if (!exists)
+                    Directory.CreateDirectory((subPath));
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Images\\" + customerId.ToString(), file.FileName);
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                      file.CopyTo(stream);
+                }
+                //foreach (IFormFile file in files)
+                //{
+                //    string path = Path.Combine(Directory.GetCurrentDirectory(), "Images\\" + customerId.ToString(), file.FileName);
+                //    using (Stream stream = new FileStream(path, FileMode.Create))
+                //    {
+                //        file.CopyTo(stream);
+                //    }
+                //    pathList += path;
+                //}
 
+                return path;
+            }
+            catch (Exception)
+            {
+                return "Failed to Upload";
+            }
+        }
         #region Private methods
         private async Task<bool> ValidateAddQuestionAsync(Models.DTO.AddQuestionRequest addQuestionRequest)
         {

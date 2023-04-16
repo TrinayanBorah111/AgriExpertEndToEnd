@@ -84,6 +84,24 @@
                 })
             return data;
         },
+        async postQuestions(payload, authURL) {
+            //GET call
+            const data = await fetch('/question', {
+                method: 'POST',
+                body: payload
+                //headers: authURL
+            }).then((response) => {
+                if (response.status == 200 || response.status ==201) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
         async updateQuestionWithID(id, payload, authURL) {
             const data = await fetch(`/question/${id}`, {
                 method: "put",
@@ -114,9 +132,46 @@
                     console.log(error)
                 })
             return data;
+        },
+        async getAllQuestionsWithCustomerID(id, authURL) {
+            //GET call
+            const data = await fetch(`/question/customer/${id}`, {
+                method: 'GET',
+               // headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
         }
     },
     expertConfigurations: {
+        async addExpert(payload) {
+            const data = await fetch("/expert", {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+                })
+                .then((response) => {
+                    //if (response.status == 200) {
+                    //    return response.json();
+                    //}
+                    return response.status;
+                })
+                .catch((error) => {
+                    return error;
+                })
+            return data;
+        },
         async updateExpertWithID(id, payload, authURL) {
             const data = await fetch(`/expert/${id}`, {
                 method: "put",

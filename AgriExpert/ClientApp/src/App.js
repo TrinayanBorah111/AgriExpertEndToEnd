@@ -20,6 +20,8 @@ import SignInExpert from "./Experts/ExpertSignIn";
 import DashboardExpert from "./Experts/DashboardExpert";
 import ExpertUnsolvedQuestions from "./Experts/ExpertUnsolvedQuestions";
 import InProgress from "./DashboardAdmin/RoutesAdmin/InProgress";
+import ExpertInProgress from "./Experts/ExpertInProgress";
+import Orders from "./DashboardCustomer/RoutesCus/orders";
 
 export default function App() {
     return (
@@ -45,6 +47,8 @@ export default function App() {
                 <Route path="/dashboardexpert" element={<DashboardExpert />} />
                 <Route path="/expertunsolved" element={<ExpertUnsolvedQuestions />} />
                 <Route path="/inprogress" element={<InProgress />} />
+                <Route path="/expertinprogess" element={<ExpertInProgress />} />
+                <Route path="/orders" element={<Orders />} />
             </Routes>
         </div>
     );
