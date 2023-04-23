@@ -43,6 +43,7 @@ namespace AgriExpert
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<ITokenHandler, AgriExpert.Repositories.TokenHandler>();
             services.AddAutoMapper(typeof(Program).Assembly);
+            services.AddMemoryCache();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
             {

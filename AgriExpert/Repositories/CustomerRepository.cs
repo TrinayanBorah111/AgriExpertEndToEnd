@@ -23,6 +23,13 @@ namespace AgriExpert.Repositories
             return customer;
         }
 
+        public async Task<Customers> CheckPlanValidity(Guid id)
+        {
+            return await agriExpertDbContext.Customers
+                .Include(x => x.Packages)
+                .FirstOrDefaultAsync(x => x.CustomersId == id);
+        }
+
         public async Task<Customers> DeleteAsync(Guid id)
         {
             var customer = await agriExpertDbContext.Customers.FirstOrDefaultAsync(x => x.CustomersId == id);
@@ -45,7 +52,20 @@ namespace AgriExpert.Repositories
         public async Task<Customers> GetAsync(Guid id)
         {
             return await agriExpertDbContext.Customers
+                .Include(x => x.Packages)
                 .FirstOrDefaultAsync(x => x.CustomersId == id);
+        }
+
+        public async Task<Customers> GetCustomerDetailsAsync(string phone)
+        {
+            return await agriExpertDbContext.Customers
+                .FirstOrDefaultAsync(x => x.CustomerPhone == phone);
+        }
+
+        public async Task<Customers> PhoneOTPVerfication(string CustomerPhone)
+        {
+            return await agriExpertDbContext.Customers
+                .FirstOrDefaultAsync(x => x.CustomerPhone == CustomerPhone);
         }
 
         public async Task<Customers> UpdateAsync(Guid id, Customers customer)
@@ -57,7 +77,9 @@ namespace AgriExpert.Repositories
             }
             existingCustomer.CustomerName = customer.CustomerName;
             existingCustomer.CustomerPhone = customer.CustomerPhone;
+            existingCustomer.CustomerAddress = customer.CustomerAddress;
             existingCustomer.PackagesId = customer.PackagesId;
+            existingCustomer.PackagePurchaseDate= customer.PackagePurchaseDate;
             await agriExpertDbContext.SaveChangesAsync();
             return existingCustomer;
         }

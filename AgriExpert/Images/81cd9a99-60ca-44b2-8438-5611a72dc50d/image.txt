@@ -1,0 +1,34 @@
+using file.Model;
+using Microsoft.AspNetCore. Http;
+using Microsoft. AspNetCore.Hvc;
+using System;
+
+using System.T0;
+
+namespace file. Controllers
+
+{
+[Route("api/file")]
+[ApiController]
+public class FileController : ControllerBase
+
+{
+[HttpPost]
+public ActionResult Post([FromForn] FileModel file)
+{
+try
+{
+string path = Path.Combine(Directory.GetCurrentDirectory(), "wwroot”, file.FileName)
+using (Stream stream = new FileStream(path, FileMode.Create))
+{
+file.FormFile.CopyTo(stream);
+5
+return StatusCode(StatusCodes. Status201Created);
+}
+catch (Exception)
+{
+return StatusCode(StatusCodes. StatusSe@InternalServerrror)
+b
+}
+I
+

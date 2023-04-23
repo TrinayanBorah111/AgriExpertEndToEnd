@@ -54,6 +54,9 @@ function SidebarCus() {
       ? `${expanded ? "mobileExpanded" : "mobileCollapsed"}`
       : `${expanded ? "desktopExpanded" : "desktopCollapsed"}`;
 
+    const clearSession = () => {
+        sessionStorage.clear();
+    }
   return (
     <>
       <div
@@ -134,7 +137,7 @@ function SidebarCus() {
             </div>
           </a>
           <div className="signbutton">
-            <a href="/signup">
+            <a href="/signup" onClick={clearSession}>
               <UilSignOutAlt color="black" />
               <span> Log Out </span>
             </a>

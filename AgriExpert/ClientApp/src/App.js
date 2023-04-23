@@ -22,6 +22,11 @@ import ExpertUnsolvedQuestions from "./Experts/ExpertUnsolvedQuestions";
 import InProgress from "./DashboardAdmin/RoutesAdmin/InProgress";
 import ExpertInProgress from "./Experts/ExpertInProgress";
 import Orders from "./DashboardCustomer/RoutesCus/orders";
+import NoPlan from "./DashboardCustomer/RoutesCus/NoValidPlan";
+import PrivacyPolicy from "./routes/PrivacyPolicy";
+import TermsConditions from "./routes/TermsConditions";
+import CancellationRefund from "./routes/CancellationRefund";
+import ShippingPolicy from "./routes/ShippingPolicy";
 
 export default function App() {
     return (
@@ -49,6 +54,11 @@ export default function App() {
                 <Route path="/inprogress" element={<InProgress />} />
                 <Route path="/expertinprogess" element={<ExpertInProgress />} />
                 <Route path="/orders" element={<Orders />} />
+                <Route path="/noplans" element={<NoPlan />} />
+                <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+                <Route path="/TermsCondition" element={<TermsConditions />} />
+                <Route path="/CancellationRefund" element={<CancellationRefund />} />
+                <Route path="/ShippingPolicy" element={<ShippingPolicy/> } />
             </Routes>
         </div>
     );

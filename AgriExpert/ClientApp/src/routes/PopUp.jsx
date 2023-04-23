@@ -1,12 +1,42 @@
 import "../components/popupStyles.css";
 import { useState, useEffect } from "react";
+import Services from "../Shared/HttpRequests";
+import { useNavigate } from "react-router-dom"
 
-const PopUp = ({ open, onClose }) => {
+const PopUp = ({ open, onClose, phone }) => {
+  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(10); // start with 10 seconds
   const [isRunning, setIsRunning] = useState(false);
   const [showResend] = useState(true);
+  const [state, setState] = useState({
+      OTP: "",
+      otpNotMatching:false
+  });
 
-  const handleResend = () => {
+  const verifyOTP = async () => {
+      let data = await Services.customerConfigurations.verifyOTP(phone, state.OTP)
+      console.log(data)
+      if (data.customersId != null) {
+          sessionStorage.setItem('authCustomerToken', data.customersId)
+          navigate(`/dashboardcustomer`)
+      } else if (data.response == "OTPNotMatching") {
+          setState({
+              ...state,
+              otpNotMatching: true
+          })
+      } else {
+          navigate("/signup")
+      }
+  }
+
+  const handleOTPChange = (event) => {
+      setState({
+          ...state,
+          OTP:event.target.value
+      })
+  }
+  const handleResend = async () => {
+    await Services.customerConfigurations.getOTPVerification(phone)
     setTimeLeft(10); // reset timeLeft to 10 seconds
     setIsRunning(true);
   };
@@ -44,11 +74,12 @@ const PopUp = ({ open, onClose }) => {
           </p>
           <div className="content">
             <h1 className="i">Enter The OTP</h1>
-            <input className="otp" placeholder="OTP" />
+            <input className="otp" placeholder="OTP" value={state.OTP} onChange={handleOTPChange}/>
+             {state.otpNotMatching?<>OTP Not correct!</>:<></> }
           </div>
 
           <div className="timer-buttons">
-            <button type="button" className="send-button">
+            <button type="button" className="send-button" onClick={verifyOTP}>
               Submit
             </button>
 

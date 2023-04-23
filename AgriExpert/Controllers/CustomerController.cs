@@ -1,29 +1,39 @@
-﻿using AgriExpert.Repositories;
+﻿using AgriExpert.Models.DTO;
+using AgriExpert.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace AgriExpert.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository customerRepository;
         private readonly IMapper mapper;
         private readonly IPackageRepository packageRepository;
-
+        readonly IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
         public CustomerController(ICustomerRepository customerRepository, IMapper mapper,
-            IPackageRepository packageRepository)
+            IPackageRepository packageRepository,IMemoryCache memoryCache)
         {
             this.customerRepository = customerRepository;
             this.mapper = mapper;
             this.packageRepository = packageRepository;
+            this.memoryCache = memoryCache;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllCustomers()
@@ -47,6 +57,144 @@ namespace AgriExpert.Controllers
             //Return response
             return Ok(customerDTO);
         }
+        [HttpGet]
+        [Route("/customer/plancheck/{id:guid}")]
+        public async Task<IActionResult> CheckCustomerPlanAsync(Guid id)
+        {
+            //Fetch data from database
+            var customer = await customerRepository.CheckPlanValidity(id);
+            //Convert data to DTO
+            var customerDTO = mapper.Map<Models.DTO.Customers>(customer);
+            var package = "";
+            if(customerDTO != null)
+            {
+                DateTime d1 = (DateTime)customerDTO.PackagePurchaseDate;
+                DateTime d2 = DateTime.Now.AddDays(-1);
+
+                TimeSpan t = d2 - d1;
+                double NrOfDays = t.TotalDays;
+                
+                if (customerDTO.Packages.PackageType == "1Day")
+                {
+                    if (NrOfDays >= 1)
+                    {
+                        package = "Invalid";
+                    }
+                    else
+                    {
+                        package = "Valid";
+                    }
+                }
+                else if (customerDTO.Packages.PackageType == "6Months")
+                {
+                    if (NrOfDays >= 180)
+                    {
+                        package = "Invalid";
+                    }
+                    else
+                    {
+                        package = "Valid";
+                    }
+                }
+                else if (customerDTO.Packages.PackageType == "1Year")
+                {
+                    if (NrOfDays >= 365)
+                    {
+                        package = "Invalid";
+                    }
+                    else
+                    {
+                        package = "Valid";
+                    }
+                }
+            }
+            //Return response
+         
+            return Ok(new { response = package });
+        }
+        [HttpGet]
+        [Route("/customer/getCustomerOTP/{CustomerPhone}")]
+        public async Task<IActionResult> GetCustomerOTPAsync(string CustomerPhone)
+        {
+            string result="";
+            //Verifying Phone number OTP
+            //var phoneExist = await customerRepository.PhoneOTPVerfication("+91"+CustomerPhone);
+            //if (phoneExist == null)
+            //{
+                // Create a New HttpClient object.
+                HttpClient client = new HttpClient();
+                Random random = new Random();
+                string value = random.Next(1001, 9999).ToString();
+                string message = "Your OTP Number is " + value + " (Sent By: AgriExpertt )";
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("https://www.fast2sms.com/dev/bulkV2?authorization=DdnYXxNsCTc3vfHJUmk2rg7qewhIG4y8AElS5Lp1b6KRjOMaWZsAOSayT0JVm95CW7feDEXInqlQKYbp&route=v3&sender_id=FTWSMS&message=" + message + "&language=english&flash=0&numbers=" + CustomerPhone);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    result = responseBody;
+
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+
+                memoryCache.Set("GeneratedOTP", value);
+           // }
+            
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("/customer/verifyCustomerOTP")]
+        public async Task<IActionResult> VerifiyCustomerOTPAsync(string CustomerPhone, string OTP)
+        {
+            string generatedOTP = (string)memoryCache.Get("GeneratedOTP");
+            if (generatedOTP == OTP)
+            {
+                
+                var phoneExist = await customerRepository.PhoneOTPVerfication("+91" + CustomerPhone);
+                
+                if (phoneExist == null)
+                {
+                    
+                    var customer = new Models.User.Customers
+                    {
+                        CustomerName = "",
+                        CustomerPhone = "+91"+CustomerPhone,
+                        PackagesId = Guid.Empty,
+                        PackagePurchaseDate = DateTime.Now,
+                        CustomerAddress = "",
+                    };
+                    await customerRepository.AddAsync(customer);
+                    var customerDTO = new Models.DTO.Customers
+                    {
+                        CustomersId = customer.CustomersId,
+                        CustomerName = customer.CustomerName,
+                        CustomerPhone = customer.CustomerPhone,
+                        PackagePurchaseDate = customer.PackagePurchaseDate,
+                        CustomerAddress = customer.CustomerAddress,
+                    };
+                    //return CreatedAtAction(nameof(GetCustomerAsync), new { id = customerDTO.CustomersId }, customerDTO);
+                    return Ok(customerDTO);
+                }
+                else
+                {
+                    var customer = await customerRepository.GetCustomerDetailsAsync("+91" + CustomerPhone);
+                    var customerDTO = new Models.DTO.Customers()
+                    {
+                        CustomersId = customer.CustomersId,
+                        CustomerName = customer.CustomerName,
+                        CustomerPhone = customer.CustomerPhone,
+                    };
+                    return Ok(customerDTO);
+                }
+            }
+            var results = "OTPNotMatching";
+            return Ok(new { response = results });
+            
+            
+        }
         [HttpPost]
         public async Task<IActionResult> AddCustomerAsync([FromBody] Models.DTO.AddCustomerRequest addCustomerRequest)
         {
@@ -58,9 +206,10 @@ namespace AgriExpert.Controllers
             //Convert DTO to domain object
             var customer = new Models.User.Customers
             {
-                CustomerName = addCustomerRequest.CustomerName,
+               // CustomerName = addCustomerRequest.CustomerName,
                 CustomerPhone = addCustomerRequest.CustomerPhone,
             };
+            
             //Pass domain object to repository to persist the data
             await customerRepository.AddAsync(customer);
             //Convert the domain object to DTO
@@ -109,7 +258,10 @@ namespace AgriExpert.Controllers
             {
                 CustomerName = updateCustomerRequest.CustomerName,
                 CustomerPhone = updateCustomerRequest.CustomerPhone,
+                CustomerAddress = updateCustomerRequest.CustomerAddress,
                 PackagesId = updateCustomerRequest.PackagesId,
+                PackagePurchaseDate = DateTime.Now,
+                
             };
             //Update question using repository
             customer = await customerRepository.UpdateAsync(id, customer);
@@ -142,10 +294,10 @@ namespace AgriExpert.Controllers
             {
                 ModelState.AddModelError(nameof(addCustomerRequest.CustomerPhone), $"{nameof(addCustomerRequest.CustomerPhone)} cannot be empty.");
             }
-            if (string.IsNullOrEmpty(addCustomerRequest.CustomerName))
-            {
-                ModelState.AddModelError(nameof(addCustomerRequest.CustomerName), $"{nameof(addCustomerRequest.CustomerName)} cannot be empty.");
-            }
+            //if (string.IsNullOrEmpty(addCustomerRequest.CustomerName))
+            //{
+            //    ModelState.AddModelError(nameof(addCustomerRequest.CustomerName), $"{nameof(addCustomerRequest.CustomerName)} cannot be empty.");
+            //}
             if (ModelState.ErrorCount > 0)
             {
                 return false;

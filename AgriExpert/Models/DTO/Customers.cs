@@ -7,6 +7,8 @@ namespace AgriExpert.Models.DTO
         public Guid CustomersId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerPhone { get; set; }
+        public string CustomerAddress { get; set; }
+        public DateTime? PackagePurchaseDate { get; set; }
         //Package properties
         public Guid PackagesId { get; set; }
         public Packages Packages { get; set; }

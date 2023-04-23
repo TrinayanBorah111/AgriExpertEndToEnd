@@ -30,7 +30,18 @@ function Pricing() {
         fetchResponse();
     }, []);
     const fetchResponse= async ()=> {
-        const data = await Services.packageConfigurations.getAllPackages()
+        let data = await Services.packageConfigurations.getAllPackages();
+        data = data.map(value => {
+            if (value.packageName != "NoPlan")
+                return value;
+        })
+        let len = data.length;
+        for (let i = 0; i <= len; i++) {
+            var myIndex = data.indexOf(undefined);
+            if (myIndex !== -1) {
+                data.splice(myIndex, 1);
+            }
+        }
         setserverResponse(data);
     }
     const getPackageType = (pack) => {

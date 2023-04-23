@@ -48,6 +48,65 @@
         }
     },
     customerConfigurations: {
+        async updateCustomerWithID(id, payload, authURL) {
+            const data = await fetch(`/customer/${id}`, {
+                method: "put",
+                //headers: authURL,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                body: JSON.stringify(payload)
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .catch((error) => {
+                    return error;
+                })
+            return data;
+        },
+        async verifyOTP(phone,otp) {
+            //GET call
+            const data = await fetch(`/customer/verifyCustomerOTP?` + new URLSearchParams({
+                CustomerPhone: phone,
+                OTP: otp,
+                }), {
+                method: 'GET',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                //headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
+        async getOTPVerification(phone) {
+            //GET call
+            const data = await fetch(`/customer/getCustomerOTP/${phone}`, {
+                method: 'GET',
+                //headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
         async getAllCustomers(authURL) {
             //GET call
             const data = await fetch('/customer', {
@@ -63,6 +122,40 @@
                 .catch((error) => {
                     console.log(error)
                 })
+            return data;
+        },
+        async getCustomerData(id, authURL) {
+            //GET call
+            const data = await fetch(`/customer/${id}`, {
+                method: 'GET',
+                //headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
+        async checkCustomerPlanValidation(id, authURL) {
+            //GET call
+            const data = await fetch(`/customer/plancheck/${id}`, {
+                method: 'GET',
+               // headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json();
+                }
+                return response.status;
+
+            })
+            .catch((error) => {
+                    console.log(error)
+            })
             return data;
         }
     },
@@ -91,10 +184,10 @@
                 body: payload
                 //headers: authURL
             }).then((response) => {
-                if (response.status == 200 || response.status ==201) {
-                    return response.json()
-                }
+                //if (response.status == 200 || response.status ==201) {
                 return response.status;
+                //}
+                //return response.status;
 
             })
                 .catch((error) => {

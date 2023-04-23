@@ -2,8 +2,14 @@ import React from 'react'
 import "../ComponentsCustomer/askquestion.css"
 import { useState, useEffect } from 'react';
 import Services from "../../Shared/HttpRequests"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import SuccessPopup from '../../Shared/SuccessPopUp';
 //let filesArray = []
 const Askquestion = () => {
+    const customerDetails = useSelector((state) => state.customerDetails)
+    const navigate = useNavigate();
+    const [isLoaded, setisLoaded] = useState(false);
     const [state, setState] = useState({
         questionContext: "",
         questionTopicName: "",
@@ -13,21 +19,22 @@ const Askquestion = () => {
         questionTopicOtherDetails: "",
         questionTopicImages: "",
         questionTopicImage:null,
-        customersId: ""
+        customersId: "",
+        uploadSuccess:false
     });
     const askQuestion = async (event) => {
-        let payload = {
-            "questionContext": state.questionContext,
-            "questionTopicName": state.questionTopicName,
-            "questionsTopicVariety": state.questionsTopicVariety,
-            "questionTopicGrowingSeason": state.questionTopicGrowingSeason,
-            "questionTopicAge": state.questionTopicAge,
-            "questionTopicOtherDetails": state.questionTopicOtherDetails,
-            "questionTopicImages": state.questionTopicImages.toString,
-            "questionTopicImage": state.questionTopicImages,
-            "customersId": "81cd9a99-60ca-44b2-8438-5611a72dc50d"
-        }
-        console.log(state.questionTopicImage)
+        //let payload = {
+        //    "questionContext": state.questionContext,
+        //    "questionTopicName": state.questionTopicName,
+        //    "questionsTopicVariety": state.questionsTopicVariety,
+        //    "questionTopicGrowingSeason": state.questionTopicGrowingSeason,
+        //    "questionTopicAge": state.questionTopicAge,
+        //    "questionTopicOtherDetails": state.questionTopicOtherDetails,
+        //    "questionTopicImages": state.questionTopicImages.toString,
+        //    "questionTopicImage": state.questionTopicImages,
+        //    "customersId": "81cd9a99-60ca-44b2-8438-5611a72dc50d"
+        //}
+        let customerToken = sessionStorage.getItem("authCustomerToken");
         event.preventDefault();
         var formData = new FormData();
         formData.append("questionContext", state.questionContext)
@@ -41,8 +48,28 @@ const Askquestion = () => {
         //for (let i = 0; i < filesArray.length;i++) {
         //    formData.append(`questionTopicImage[${i}]`, filesArray[i])
         //}
-        formData.append("customersId", "81cd9a99-60ca-44b2-8438-5611a72dc50d")
+        formData.append("customersId", customerToken)
         let data = await Services.questionConfigurations.postQuestions(formData);
+        if (data == 201 || data == 200) {
+            setState({
+                ...state,
+                uploadSuccess:true
+            })
+        }
+    }
+    const handleClose = () => {
+        setState({
+            ...state,
+            questionContext: "",
+            questionTopicName: "",
+            questionsTopicVariety: "",
+            questionTopicGrowingSeason: "",
+            questionTopicAge: "",
+            questionTopicOtherDetails: "",
+            questionTopicImages: "",
+            questionTopicImage: "",
+            uploadSuccess: false,
+        })
     }
     const handleQuestionContent = (e) => {
         setState({
@@ -96,8 +123,43 @@ const Askquestion = () => {
             questionTopicOtherDetails: e.target.value
         })
     }
+    useEffect(() => {
+        validateAuthToken();
+        //fetchResponse()
+    }, []);
+    const validateAuthToken = () => {
+        let customerToken = sessionStorage.getItem("authCustomerToken");
+        const authToken = !!customerToken
+        if (authToken) {
+            fetchResponse();
+        } else {
+            navigate(`/signup`)
+        }
+    }
+    const fetchResponse = async () => {
+        //const token = sessionStorage.getItem("authExpertToken");
+        //const expertId = sessionStorage.getItem("expertlLoggedInId");
+        //let authTokenURL = await Services.authConfigurations.getAuthURL(`/question/expert/${expertId}`, token)
+        //let data = await Services.questionConfigurations.getAllQuestionsWithExpertID(expertId, authTokenURL);
+        //let data = await Services.questionConfigurations.getAllQuestionsWithCustomerID('81cd9a99-60ca-44b2-8438-5611a72dc50d', '');
+        let customerToken = sessionStorage.getItem("authCustomerToken");
+        let planDataCheck = await Services.customerConfigurations.checkCustomerPlanValidation(customerToken, '')
+        if (planDataCheck == 401 || planDataCheck == 400 || planDataCheck == 500) {
+            sessionStorage.clear()
+            navigate(`/signup`)
+        } else {
+            if (planDataCheck.response == "Invalid" || planDataCheck.response == "") {
+                navigate(`/noplans`)
+            }
+            setisLoaded(true);
+        }
+    }
     return (
-        <div className='question'>
+        isLoaded ?<div>
+            <div >{state.uploadSuccess ? <SuccessPopup handleClose={handleClose} /> : <></>}</div>
+            
+            <div className='question'>
+           
             <div className='variety'>
                 <div className='crop'>
                     Question:
@@ -150,12 +212,15 @@ const Askquestion = () => {
 
 
                 {/* Images */}
-                <div className="imageCrop">
-                    Upload Photos:
-                    <input  onChange={handleQuestionImage} type='file' accept="image/*" required />
-                    <input  onChange={handleQuestionImage} type='file' accept="image/*" required />
-                    <input  onChange={handleQuestionImage} type='file' accept="image/*" required />
-                </div>
+                {customerDetails.packages.packageType == "1Day"?
+                    <div className="imageCrop">
+                    Upload Photo:
+                    <input onChange={handleQuestionImage} type='file' accept="image/*" required />
+                    </div> :
+                    <div className="imageCrop">
+                        Upload File:
+                        <input onChange={handleQuestionImage} type='file' accept="*/*" required />
+                    </div>}
 
                 {/* Description */}
                 <div className="description">
@@ -174,7 +239,7 @@ const Askquestion = () => {
                     Upload
                 </button>
             </div>
-        </div>
+            </div></div>:<></>
     )
 }
 

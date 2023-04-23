@@ -10,6 +10,8 @@ namespace AgriExpert.Models.User
         public Guid CustomersId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerPhone { get; set; }
+        public string CustomerAddress { get; set; }
+        public DateTime? PackagePurchaseDate { get; set; }
         //Package properties
         public Guid? PackagesId { get; set; }
         public virtual Packages Packages { get; set; }

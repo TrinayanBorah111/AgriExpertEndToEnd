@@ -1,23 +1,42 @@
 import "../components/SignUpstyles.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PopUp from "./PopUp";
 import Footer from "../components/Footer";
 import Navbar from "../components/navbar";
 import { useForm } from "react-hook-form";
-
+import Services from "../Shared/HttpRequests"
+import { useNavigate } from "react-router-dom"
 
 function Sign() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        validateAuthToken();
+    }, []);
+    const validateAuthToken = () => {
+        let authToken = sessionStorage.getItem("authCustomerToken");
+        if (authToken != null || authToken != undefined) {
+            navigate("/dashboardcustomer")
+        } else {
+            navigate("/signup")
+        }
+  }
   const [openModal, setOpenModal] = useState(false);
+  const [state, setState] = useState({
+      phoneNumber:""
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
   } = useForm({ mode: "onBlur" });
-
-  const onSubmit = (data) => {
-    console.log(data);
-    setOpenModal(true);
+  const onSubmit = async (data) => {  
+      setOpenModal(true);
+      setState({
+          ...state,
+          phoneNumber: data.phone
+      })
+    await Services.customerConfigurations.getOTPVerification(data.phone)
     reset();
   };
 
@@ -57,6 +76,7 @@ function Sign() {
                     {openModal && (
                       <PopUp
                         open={openModal}
+                        phone={state.phoneNumber}
                         onClose={() => setOpenModal(false)}
                       ></PopUp>
                     )}
