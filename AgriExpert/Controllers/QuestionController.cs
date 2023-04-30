@@ -234,11 +234,11 @@ namespace AgriExpert.Controllers
             try
             {
                 //string pathList = "";
-                string subPath = "ClientApp\\src\\assets\\Images\\" + customerId.ToString(); // Your code goes here
+                string subPath = "ClientApp\\src\\Images\\" + customerId.ToString(); // Your code goes here
                 bool exists = Directory.Exists((subPath));
                 if (!exists)
                     Directory.CreateDirectory((subPath));
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp\\src\\assets\\Images\\" + customerId.ToString(), file.FileName);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp\\src\\Images\\" + customerId.ToString(), file.FileName);
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                       file.CopyTo(stream);
@@ -253,7 +253,7 @@ namespace AgriExpert.Controllers
                 //    pathList += path;
                 //}
 
-                return path;
+                return file.FileName;
             }
             catch (Exception e)
             {

@@ -4,10 +4,14 @@ import { Dialog, DialogTitle, DialogContent, Typography, Button } from '@mui/mat
 import { useState } from 'react';
 import Services from '../Shared/HttpRequests';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux'
-import Image from "../Images/27ed3a84-71f8-466b-9445-a04411081fa9/signature.png"
+import { useSelector } from 'react-redux';
+import image from "../Images/27ed3a84-71f8-466b-9445-a04411081fa9/signature.png"
+
 
 const PopUp = (props) => {
+    const getExtension = (filename) => {
+        return filename.split('.').pop()
+    }
     const [state, setState] = useState({
         questionAnswer: props.selectedRow.questionAnswer,
         questionStatus: props.selectedRow.questionStatus,
@@ -15,7 +19,8 @@ const PopUp = (props) => {
         questionFeedback: props.selectedRow.questionFeedback,
         anyUpdate: false,
         editAnswer: false,
-        //img: require(props.selectedRow.questionTopicImages) 
+        img: props.selectedRow.questionTopicImages,
+        fileType: getExtension(props.selectedRow.questionTopicImages.toLowerCase())
     })
     const [questionPending, setquestionPending] = React.useState(0);
     const expertList = useSelector((state) => state.expertDetails)
@@ -171,7 +176,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require('../assets/sample.jpg')} />
+                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
                     </>
                 )
             } else if (props.tab == "UnSolved") {
@@ -218,7 +223,7 @@ const PopUp = (props) => {
                             <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
 
                         </div> : <></>}
-                        <img style={{ marginTop: "10px" }} src={require('../assets/sample.jpg')} />
+                        <img style={{ marginTop: "10px" }} src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
                     </>
                 )
             }
@@ -265,7 +270,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require(props.selectedRow.questionTopicImages)} />
+                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
                     </>
                 )
             } else if (props.tab == "Customer") {
@@ -282,7 +287,7 @@ const PopUp = (props) => {
                     </>
                 )
             } else if (props.tab == "InProgress") {
-               
+                console.log(props.selectedRow.questionTopicImages.toString())
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
@@ -293,8 +298,13 @@ const PopUp = (props) => {
                         <div><b>{"Give Feedback: "}</b>
                             <textarea className='inputAreaField1' placeholder="Give Feedback" onChange={() => handleQuestonFeedback(event)} value={state.questionFeedback} />
                         </div>
-                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={Image} />
+                        <center >
+                        {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif"?
+
+                            < img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                            : <button className="op" >Downlaod File</button>
+                         }
+                        </center>
                     </>
                 )
             } else if (props.tab == "Orders") {
@@ -319,7 +329,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require('../assets/sample.jpg')} />
+                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
                     </>
                 )
             }
@@ -330,7 +340,7 @@ const PopUp = (props) => {
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
-                        <img src={require('../assets/sample.jpg')} />
+                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
                     </>
                 )
             }
