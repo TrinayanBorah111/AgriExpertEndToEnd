@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Services from '../Shared/HttpRequests';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux'
+import Image from "../Images/27ed3a84-71f8-466b-9445-a04411081fa9/signature.png"
 
 const PopUp = (props) => {
     const [state, setState] = useState({
@@ -14,6 +15,7 @@ const PopUp = (props) => {
         questionFeedback: props.selectedRow.questionFeedback,
         anyUpdate: false,
         editAnswer: false,
+        //img: require(props.selectedRow.questionTopicImages) 
     })
     const [questionPending, setquestionPending] = React.useState(0);
     const expertList = useSelector((state) => state.expertDetails)
@@ -176,6 +178,10 @@ const PopUp = (props) => {
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
+                        <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
+                        <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
+                        <div><b>{"Question Descripton: "}</b> {props.selectedRow.questionTopicOtherDetails}</div>
                         <div><b>{"Question Answer: "}</b></div>
                         <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
                         {/*<div>
@@ -259,7 +265,7 @@ const PopUp = (props) => {
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require('../assets/sample.jpg')} />
+                        <img src={require(props.selectedRow.questionTopicImages)} />
                     </>
                 )
             } else if (props.tab == "Customer") {
@@ -276,6 +282,7 @@ const PopUp = (props) => {
                     </>
                 )
             } else if (props.tab == "InProgress") {
+               
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
@@ -287,7 +294,17 @@ const PopUp = (props) => {
                             <textarea className='inputAreaField1' placeholder="Give Feedback" onChange={() => handleQuestonFeedback(event)} value={state.questionFeedback} />
                         </div>
                         <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require('../assets/sample.jpg')} />
+                        <img src={Image} />
+                    </>
+                )
+            } else if (props.tab == "Orders") {
+                return (
+                    <>
+                        <div><b>{"Order Requirement: "}</b> {props.selectedRow.ordersRequirement}</div>
+                        <div><b>{"Address: "}</b> {props.selectedRow.ordersAddress}</div>
+                        <div><b>{"Phone: "}</b> {props.selectedRow.ordersPhone}</div>
+                        <div><b>{"Placed by: "}</b> {props.selectedRow.customers.customerName}</div>
+                       
                     </>
                 )
             }

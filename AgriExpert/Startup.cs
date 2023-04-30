@@ -41,6 +41,7 @@ namespace AgriExpert
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ITokenHandler, AgriExpert.Repositories.TokenHandler>();
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddMemoryCache();

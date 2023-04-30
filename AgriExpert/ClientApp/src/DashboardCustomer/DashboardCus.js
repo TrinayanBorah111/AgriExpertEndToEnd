@@ -14,6 +14,7 @@ function DashboardCus() {
     const [state, setstate] = useState({
         name: "",
         address: "",
+        updateSuccess:false
     });
   
     const [isLoaded, setisLoaded] = useState(false);
@@ -63,7 +64,17 @@ function DashboardCus() {
             CustomerPhone: serverResponse.customerPhone,
             PackagesId: serverResponse.packagesId
         }
-        await Services.customerConfigurations.updateCustomerWithID(id,payload,'')
+        let data = await Services.customerConfigurations.updateCustomerWithID(id, payload, '');
+        console.log(data)
+        if (data == 200 || data == 201) {
+            setstate({
+                ...state,
+                name: "",
+                address: "",
+                updateSuccess: true
+            })
+            await fetchResponse()
+        }
     }
     const handleNameChange = (event) => {
         setstate({

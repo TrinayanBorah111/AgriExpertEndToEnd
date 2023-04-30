@@ -15,6 +15,7 @@ namespace AgriExpert.Data
         public DbSet<Customers> Customers { get; set; }
         public DbSet<Experts> Experts { get; set; }
         public DbSet<Packages> Packages { get; set; }
+        public DbSet<Orders> Orders { get; set; }
         public DbSet<Admins> Admin { get; set; }
     }
 }

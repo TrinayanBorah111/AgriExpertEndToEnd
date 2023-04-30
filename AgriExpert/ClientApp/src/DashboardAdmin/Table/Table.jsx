@@ -21,9 +21,13 @@ export default function DataGridDemo(props) {
                 } else if (row.customersId != null && row.customerPhone != null) {
                     row.id = getRandomName(row.customersId)
                     row.packagesInfo = row.packages.packageName
+                    row.addressInfo = row.customerAddress
                 } else if (row.questionsId != null && row.questionContext !== null) {
                     row.id = getRandomName(row.questionsId)
                     row.answeredBy = row.experts?.expertFullName
+                } else if (row.ordersId != null) {
+                    row.id = getRandomName(row.ordersId)
+                    row.customerName = row.customers?.customerName
                 }
 
             })
@@ -62,6 +66,8 @@ export default function DataGridDemo(props) {
                 return "Check Details"
             if (tab == "InProgress")
                 return "Review Answer"
+            if (tab == "Orders")
+                return "View Order"
         } else if (role == "Customer") {
             if (tab == "UnSolved")
                 return "View Question"
@@ -91,6 +97,9 @@ export default function DataGridDemo(props) {
                 return <span>All Cutomers</span>
             if (tab == "InProgress")
                 return <span>In-Progress Questions</span>
+            if (tab == "Orders") {
+                return <span>Orders List</span>
+            }
         } else if (role == "Customer") {
             if (tab == "UnSolved")
                 return <span> Un-Solved Questions</span>
@@ -103,48 +112,6 @@ export default function DataGridDemo(props) {
             ...state,
             buttonClicked: true,
         })
-        //if (props.role == "Expert") {
-        //    if (props.tab == "Solved") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    } else if (props.tab == "UnSolved") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    }
-        //} else if (props.role == "Admin") {
-        //    if (props.tab == "Expert" || props.tab == "RevokeExpert") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    } else if (props.tab == "Unsolved") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-
-        //    } else if (props.tab == "Solved") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    } else if (props.tab == "Customer") {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    } else if (props.tab == 'InProgress') {
-        //        setState({
-        //            ...state,
-        //            buttonClicked: true,
-        //        })
-        //    }
-            
-        //}
     }
     const handleClose = () => {
         setState({

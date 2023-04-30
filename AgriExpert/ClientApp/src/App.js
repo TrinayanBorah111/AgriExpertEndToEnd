@@ -27,6 +27,7 @@ import PrivacyPolicy from "./routes/PrivacyPolicy";
 import TermsConditions from "./routes/TermsConditions";
 import CancellationRefund from "./routes/CancellationRefund";
 import ShippingPolicy from "./routes/ShippingPolicy";
+import OrderCheck from "./DashboardAdmin/RoutesAdmin/OrdersCheck";
 
 export default function App() {
     return (
@@ -58,7 +59,8 @@ export default function App() {
                 <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
                 <Route path="/TermsCondition" element={<TermsConditions />} />
                 <Route path="/CancellationRefund" element={<CancellationRefund />} />
-                <Route path="/ShippingPolicy" element={<ShippingPolicy/> } />
+                <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
+                <Route path="/OrderCheck" element={<OrderCheck/> } />
             </Routes>
         </div>
     );

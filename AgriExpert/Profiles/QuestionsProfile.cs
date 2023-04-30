@@ -12,6 +12,8 @@ namespace AgriExpert.Profiles
                 .ReverseMap();
             CreateMap<Models.User.Experts, Models.DTO.Experts>()
                 .ReverseMap();
+            CreateMap<Models.Forum.Orders, Models.DTO.Orders>()
+                .ReverseMap();
         }
     }
 }

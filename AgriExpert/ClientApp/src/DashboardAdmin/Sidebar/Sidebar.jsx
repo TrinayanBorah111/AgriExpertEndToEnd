@@ -84,7 +84,7 @@ function SidebarAdmin() {
         </div>
 
         {/* Menu */}
-        <div className="menu">
+              <div className="menu" style={{marginTop:"-5px"} }>
           <a href="/dashboardadmin">
             <div>
               <div className="sjj">
@@ -145,8 +145,16 @@ function SidebarAdmin() {
               </div>
               <span className="sp"> InProgress Questions </span>
             </div>
+           </a>
+                  <a href="/OrderCheck">
+                      <div>
+                          <div className="sjj">
+                              <UilNotes />
+                          </div>
+                          <span className="sp"> Orders </span>
+                      </div>
                   </a>
-                  <div className="signbutton" style={{ marginTop:"0px" }}>
+           <div className="signbutton" style={{ marginTop:"0px" }}>
             <a href="/admin" >
               <UilSignOutAlt color="black" />
               <span onClick={handleLogout}> Log Out </span>

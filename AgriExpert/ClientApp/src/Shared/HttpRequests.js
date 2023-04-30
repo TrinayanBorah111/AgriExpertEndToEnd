@@ -48,6 +48,44 @@
         }
     },
     customerConfigurations: {
+        async getAllOrders(authURL) {
+            //GET call
+            const data = await fetch('/order', {
+                method: 'GET',
+                headers: authURL
+            }).then((response) => {
+                if (response.status == 200) {
+                    return response.json()
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
+        async postOrders(payload, authURL) {
+            //GET call
+            const data = await fetch('/order', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => {
+                //if (response.status == 200 || response.status ==201) {
+                return response.status;
+                //}
+                //return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
         async updateCustomerWithID(id, payload, authURL) {
             const data = await fetch(`/customer/${id}`, {
                 method: "put",
@@ -59,7 +97,7 @@
                 body: JSON.stringify(payload)
             })
                 .then((response) => {
-                    return response.json();
+                    return response.status;
                 })
                 .catch((error) => {
                     return error;

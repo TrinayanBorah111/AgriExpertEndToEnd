@@ -7,9 +7,14 @@ import { useNavigate } from "react-router-dom"
 const orders = () => {
     const navigate = useNavigate();
     const [isLoaded, setisLoaded] = useState(false);
+    const [state, setState] = useState({
+        requirement: "",
+        address: "",
+        phone: "",
+        requestSent:false
+    })
     useEffect(() => {
         validateAuthToken();
-        //fetchResponse()
     }, []);
     const validateAuthToken = () => {
         let customerToken = sessionStorage.getItem("authCustomerToken");
@@ -38,15 +43,53 @@ const orders = () => {
             setisLoaded(true);
         }
     }
+    const handleSubmit = async () => {
+        const payload = {
+            OrdersRequirement: state.requirement,
+            OrdersPhone: state.phone,
+            OrdersAddress : state.address,
+            CustomersId :  sessionStorage.getItem("authCustomerToken"),
+        }
+        let data = await Services.customerConfigurations.postOrders(payload, '')
+        console.log(data)
+        if (data == 200 || data == 201) {
+            setState({
+                ...state,
+                requirement: "",
+                address: "",
+                phone: "",
+                requestSent: true
+            })
+        }
+    }
+    const handleRequrimentChange = (event) => {
+        setState({
+            ...state,
+            requirement: event.target.value
+        })
+    }
+    const handleAddressChange = (event) => {
+        setState({
+            ...state,
+            address: event.target.value
+        })
+    }
+    const handlePhoneChange = (event) => {
+        setState({
+            ...state,
+            phone: event.target.value
+        })
+    }
     return (
         isLoaded? < div className = "Dashboard" >
             <div className="AppGlass">
                 <SidebarCus />
                 <div className="adex">
-                    <input className="po" type="text" placeholder="Requirements" />
-                    <input className="po" type="text" placeholder="Address" />
-                    <input id="phoneNumber" className="po" type="number" placeholder="Phone No" />
-                    <button className="op">Submit</button>
+                    <input className="po" type="text" placeholder="Requirements" value={state.requirement} onChange={handleRequrimentChange} />
+                    <input className="po" type="text" placeholder="Address" value={ state.address} onChange={handleAddressChange} />
+                    <input id="phoneNumber" className="po" type="number" placeholder="Phone No" value={ state.phone} onChange={handlePhoneChange } />
+                    <button className="op" style={{ marginTop: "8px" }} onClick={handleSubmit}>Submit</button>
+                    <p>{state.requestSent?"Order request sent successfully!":""}</p>
                 </div>
                 <div></div>
             </div>
