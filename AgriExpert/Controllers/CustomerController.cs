@@ -315,10 +315,10 @@ namespace AgriExpert.Controllers
             {
                 ModelState.AddModelError(nameof(updateCustomerRequest.CustomerPhone), $"{nameof(updateCustomerRequest.CustomerPhone)} cannot be empty.");
             }
-            if (string.IsNullOrEmpty(updateCustomerRequest.CustomerName))
-            {
-                ModelState.AddModelError(nameof(updateCustomerRequest.CustomerName), $"{nameof(updateCustomerRequest.CustomerName)} cannot be empty.");
-            }
+            //if (string.IsNullOrEmpty(updateCustomerRequest.CustomerName))
+            //{
+            //    ModelState.AddModelError(nameof(updateCustomerRequest.CustomerName), $"{nameof(updateCustomerRequest.CustomerName)} cannot be empty.");
+            //}
             var PackageId = await packageRepository.GetAsync(updateCustomerRequest.PackagesId);
             if (PackageId == null)
             {

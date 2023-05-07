@@ -60,7 +60,7 @@ export default function App() {
                 <Route path="/TermsCondition" element={<TermsConditions />} />
                 <Route path="/CancellationRefund" element={<CancellationRefund />} />
                 <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
-                <Route path="/OrderCheck" element={<OrderCheck/> } />
+                <Route path="/OrderCheck" element={<OrderCheck />} />
             </Routes>
         </div>
     );

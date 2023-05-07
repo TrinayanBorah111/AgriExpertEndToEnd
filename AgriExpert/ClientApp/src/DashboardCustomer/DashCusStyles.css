@@ -56,9 +56,9 @@
       grid-template-columns: 1fr;
     }
     .informationCus {
-      margin-left: 5px;
-      margin-top: 10rem;
-      margin-right: 1rem;
+        margin-top: 60%;
+        margin-left: 30%;
+        margin-right: 1rem;
     }
   
     div > div > div > button {

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Services from '../Shared/HttpRequests';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import image from "../Images/27ed3a84-71f8-466b-9445-a04411081fa9/signature.png"
+
 
 
 const PopUp = (props) => {
@@ -20,7 +20,7 @@ const PopUp = (props) => {
         anyUpdate: false,
         editAnswer: false,
         img: props.selectedRow.questionTopicImages,
-        fileType: getExtension(props.selectedRow.questionTopicImages.toLowerCase())
+        fileType: props.selectedRow.questionTopicImages != undefined ? getExtension(props.selectedRow.questionTopicImages.toLowerCase()) : ""
     })
     const [questionPending, setquestionPending] = React.useState(0);
     const expertList = useSelector((state) => state.expertDetails)
@@ -165,28 +165,48 @@ const PopUp = (props) => {
         props.handleClose()
         window.location.reload();
     }
+    const handleFileDownload = async (filePath, fileName) => {
+        let data = await Services.questionConfigurations.getFileDownload(filePath.toString(), fileName.toString(), '');
+    }
     const checkTabType = () => {
         if (props.role == "Expert") {
             if (props.tab == "Solved") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
-                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
                     </>
                 )
             } else if (props.tab == "UnSolved") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Question Descripton: "}</b> {props.selectedRow.questionTopicOtherDetails}</div>
+                       
                         <div><b>{"Question Answer: "}</b></div>
                         <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
                         {/*<div>
@@ -204,12 +224,14 @@ const PopUp = (props) => {
                     </>
                 )
             } else if (props.tab == "InProgress") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
 
                         {props.selectedRow.questionFeedback !== "-" ?
@@ -223,7 +245,14 @@ const PopUp = (props) => {
                             <textarea className='inputAreaField' onChange={handleAnswerChange} placeholder="Enter the answer" value={state.questionAnswer} />
 
                         </div> : <></>}
-                        <img style={{ marginTop: "10px" }} src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color:"black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
+                       
                     </>
                 )
             }
@@ -243,6 +272,7 @@ const PopUp = (props) => {
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div>
                             <b>{"Experts List: "}</b>
                             <select className="dropdownField" onChange={() => { handleExpertChange(event) }} value={state.assignedExpertId}>
@@ -262,15 +292,22 @@ const PopUp = (props) => {
                     </>
                 )
             } else if (props.tab == "Solved") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
-                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
                     </>
                 )
             } else if (props.tab == "Customer") {
@@ -287,22 +324,23 @@ const PopUp = (props) => {
                     </>
                 )
             } else if (props.tab == "InProgress") {
-                console.log(props.selectedRow.questionTopicImages.toString())
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
                         <div><b>{"Give Feedback: "}</b>
                             <textarea className='inputAreaField1' placeholder="Give Feedback" onChange={() => handleQuestonFeedback(event)} value={state.questionFeedback} />
                         </div>
                         <center >
-                        {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif"?
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
 
-                            < img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
-                            : <button className="op" >Downlaod File</button>
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
                          }
                         </center>
                     </>
@@ -321,26 +359,41 @@ const PopUp = (props) => {
         }
         else if (props.role == "Customer") {
             if (props.tab == "Solved") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Question Answer: "}</b> {props.selectedRow.questionAnswer}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
-                        <div><b>{"Images: "}</b> {props.selectedRow.questionTopicImages}</div>
-                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
                     </>
                 )
             }
             if (props.tab == "UnSolved") {
+                let filepath = `Files\\${props.selectedRow.customersId}\\${state.img}`;
                 return (
                     <>
                         <div><b>{"Question Context: "}</b> {props.selectedRow.questionContext}</div>
                         <div><b>{"Growing Season: "}</b> {props.selectedRow.questionTopicGrowingSeason}</div>
                         <div><b>{"Variety: "}</b> {props.selectedRow.questionsTopicVariety}</div>
+                        <div><b>{"Age: "}</b> {props.selectedRow.questionTopicAge}</div>
                         <div><b>{"Topic Name: "}</b> {props.selectedRow.questionTopicName}</div>
-                        <img src={require(`../Images/${props.selectedRow.customersId}/${state.img}`)} />
+                        <center >
+                            {state.fileType == "jpg" || state.fileType == "png" || state.fileType == "jpeg" || state.fileType == "gif" ?
+
+                                < img src={`Files/${props.selectedRow.customersId}/${state.img}`} />
+                                : <button className="op" style={{ color: "black" }} onClick={() => handleFileDownload(filepath, state.img)}>Download File</button>
+                            }
+                        </center>
                     </>
                 )
             }

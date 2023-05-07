@@ -15,7 +15,6 @@ const PopUp = ({ open, onClose, phone }) => {
 
   const verifyOTP = async () => {
       let data = await Services.customerConfigurations.verifyOTP(phone, state.OTP)
-      console.log(data)
       if (data.customersId != null) {
           sessionStorage.setItem('authCustomerToken', data.customersId)
           navigate(`/dashboardcustomer`)
@@ -73,13 +72,15 @@ const PopUp = ({ open, onClose, phone }) => {
             X
           </p>
           <div className="content">
-            <h1 className="i">Enter The OTP</h1>
-            <input className="otp" placeholder="OTP" value={state.OTP} onChange={handleOTPChange}/>
+           <h1 className="i" style={{ marginLeft: "10%",
+                          width: "max-content"
+                      }}>Enter The OTP</h1>
+           <input className="otp" style={{ margin:"auto" }} placeholder="OTP" value={state.OTP} onChange={handleOTPChange} />
              {state.otpNotMatching?<>OTP Not correct!</>:<></> }
           </div>
 
           <div className="timer-buttons">
-            <button type="button" className="send-button" onClick={verifyOTP}>
+                      <button type="button" className="send-button" style={{ margin: "auto", marginBottom: "10px"}} onClick={verifyOTP}>
               Submit
             </button>
 

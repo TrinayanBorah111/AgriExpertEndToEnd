@@ -164,12 +164,13 @@ const Askquestion = () => {
                 <div className='crop'>
                     Question:
                     <input
-                        id='textField'
-                        className='ppp'
-                        type="text"
-                        value={state.questionContext}
-                        onChange={handleQuestionContent}
-                        required
+                            id='textField'
+                            className='ppp'
+                            type="text"
+                            value={state.questionContext}
+                            onChange={handleQuestionContent}
+                            required
+                            style={{ alignSelf: "center"} }
                     />
                 </div>
                 <div className='crop'>
@@ -180,33 +181,37 @@ const Askquestion = () => {
                         type="text"
                         value={state.questionTopicName}
                         onChange={handleQuestionType}
-                        required
+                            required
+                            style={{ alignSelf: "center" }}
                     />
                 </div>
 
                 {/* Age-Variety */}
-                <div className="varieties">
+                <div className="crop">
                     Variety: <input
                         id='textField'
                         value={state.questionsTopicVariety}
                         onChange={handleQuestionVariety}
-                        className='vvv'
+                            className='ppp'
                         type='text'
-                        required
+                            required
+                            style={{ alignSelf: "center" }}
                     />
                     Crop Age: <input
                         id='textField'
                         value={state.questionTopicAge}
                         onChange={handleQuestionAge}
-                        className='vvv'
-                        type='text'
+                            className='ppp'
+                            type='text'
+                            style={{ alignSelf: "center" }}
                         required />
                     <span className='season'>Growing Season: </span><input
                         id='textField'
                         value={state.questionTopicGrowingSeason}
                         onChange={handleQuestionGrowingSeason }
-                        className='vvv'
-                        type='text'
+                            className='ppp'
+                            type='text'
+                            style={{ alignSelf: "center" }}
                         required />
                 </div>
 
@@ -215,11 +220,11 @@ const Askquestion = () => {
                 {customerDetails.packages.packageType == "1Day"?
                     <div className="imageCrop">
                     Upload Photo:
-                    <input onChange={handleQuestionImage} type='file' accept="image/*" required />
+                            <input style={{ alignSelf: "center" }} onChange={handleQuestionImage} type='file' accept="image/*" required />
                     </div> :
                     <div className="imageCrop">
                         Upload File:
-                        <input onChange={handleQuestionImage} type='file' accept="*/*" required />
+                            <input style={{ alignSelf: "center" }} onChange={handleQuestionImage} type='file' accept="*/*" required />
                     </div>}
 
                 {/* Description */}
@@ -229,7 +234,8 @@ const Askquestion = () => {
                         value={state.questionTopicOtherDetails}
                         onChange={handleQuestionDesciption}
                         className='des'
-                        type="text"
+                            type="text"
+                            style={{ alignSelf: "center" }}
                         required />
                     <span className="ddd" style={{ fontWeight: 'bold' }}>
                         *Please do not upload/submit the unrelated/irrelevant photos<br />

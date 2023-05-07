@@ -1,7 +1,8 @@
 import "../SidebarCustomer/SidebarCus.css";
 import { GiFallingLeaf } from "react-icons/gi";
 import { UilSignOutAlt, UilBars, UilShoppingCart } from "@iconscout/react-unicons";
-
+import { useDispatch } from "react-redux";
+import ActionCall from "../../actions/index";
 import {
   UilUserCheck,
   UilUserTimes,
@@ -15,7 +16,7 @@ import { motion } from "framer-motion";
 function SidebarCus() {
   const [expanded, setExpanded] = useState(false);
   const [screenSize, setScreenSize] = useState("");
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -56,6 +57,7 @@ function SidebarCus() {
 
     const clearSession = () => {
         sessionStorage.clear();
+        dispatch(ActionCall.actionCalls.addCustomerDetails(null))
     }
   return (
     <>

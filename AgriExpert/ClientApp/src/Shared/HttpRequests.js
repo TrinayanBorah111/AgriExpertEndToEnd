@@ -1,4 +1,5 @@
-﻿export default {
+﻿import { saveAs } from 'file-saver';
+export default {
     packageConfigurations: {
         async getAllPackages() {
             //GET call
@@ -198,6 +199,30 @@
         }
     },
     questionConfigurations: {
+        async getFileDownload(filePath, fileName, authURL) {
+            //GET call
+            const data = await fetch(`/question/DownloadFile?` + new URLSearchParams({
+                filePath: filePath,
+                fileName : fileName
+            }), {
+                method: 'GET',
+                headers: {
+                   'Content-Type': 'application/json',
+                },
+               
+            }).then((response) => {
+                if (response.status == 200) {
+                    saveAs(response.url , fileName);
+                    return response;
+                }
+                return response.status;
+
+            })
+                .catch((error) => {
+                    console.log(error)
+                })
+            return data;
+        },
         async getAllQuestions(authURL) {
             //GET call
             const data = await fetch('/question', {

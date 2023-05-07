@@ -43,7 +43,8 @@ function DashboardCus() {
             sessionStorage.clear()
             navigate(`/signup`)
         } else {
-            if (data.response == "Invalid" || data.response=="") {
+            if (data.response == "Invalid" || data.response == "") {
+                dispatch(ActionCall.actionCalls.addCustomerDetails(customerData))
                 navigate(`/noplans`)
             } else {
                 dispatch(ActionCall.actionCalls.addCustomerDetails(customerData))

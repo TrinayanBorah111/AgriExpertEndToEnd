@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace AgriExpert.Controllers
 {
@@ -228,17 +229,40 @@ namespace AgriExpert.Controllers
         //    }
         //    return imageName;
         //}
+        [HttpGet("/question/DownloadFile")]
+        public async Task<IActionResult>  DownloadFile(string filePath, string fileName)
+        {
+            //var filePath1 = "ClientApp\\build\\" + filePath;
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp\\build\\", filePath); // get the path of the file
+            Console.WriteLine(path);
+            //var fs = new FileStream(path, FileMode.Open); // convert it to a stream
+            // Return the file. A byte array can also be used instead of a stream
+            //return File(fs, "application/octet-stream", filePath1);
+            //return PhysicalFile(path, "text/plain", filePath1);
+            //return File(await System.IO.File.ReadAllBytesAsync(path), "application/octet-stream", fileName);
+           // var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload\\Files", filename);
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(path, out var contenttype))
+            {
+                contenttype = "application/octet-stream";
+            }
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(path);
+            return File(bytes, contenttype, Path.GetFileName(path));
+
+        }
         [NonAction]
         public async Task<string> SaveImageAlt(IFormFile file, string customerId)
         {
             try
             {
                 //string pathList = "";
-                string subPath = "ClientApp\\src\\Images\\" + customerId.ToString(); // Your code goes here
+                string subPath = "ClientApp\\build\\Files\\" + customerId.ToString(); // Your code goes here
                 bool exists = Directory.Exists((subPath));
                 if (!exists)
                     Directory.CreateDirectory((subPath));
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp\\src\\Images\\" + customerId.ToString(), file.FileName);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp\\build\\Files\\" + customerId.ToString(), file.FileName);
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {
                       file.CopyTo(stream);
