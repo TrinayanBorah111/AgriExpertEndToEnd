@@ -101,7 +101,7 @@ namespace AgriExpert.Controllers
             }
             Console.WriteLine(addQuestionRequest.QuestionTopicImage);
             //addQuestionRequest.QuestionTopicImages = 
-            string path =    await SaveImageAlt(addQuestionRequest.QuestionTopicImage, addQuestionRequest.CustomersId.ToString());
+            string path = await SaveImageAlt(addQuestionRequest.QuestionTopicImage, addQuestionRequest.CustomersId.ToString());
             //Convert DTO to domain object
             var question = new Models.Forum.Questions
             {

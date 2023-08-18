@@ -76,7 +76,7 @@ function Footer() {
             <SocialIcon />
             AgriExpert
           </SocialLogo>
-          <WebsiteRights>Ⓒ AgriExpert 2022</WebsiteRights>
+          <WebsiteRights>Ⓒ AgriExpert 2023</WebsiteRights>
           <SocialIcons>
             <SocialIconLink
               href="https://www.facebook.com/"

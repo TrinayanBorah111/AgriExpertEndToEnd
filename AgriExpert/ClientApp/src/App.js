@@ -1,3 +1,4 @@
+import React from 'react';
 import "./styles.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./routes/Home";
@@ -28,6 +29,9 @@ import TermsConditions from "./routes/TermsConditions";
 import CancellationRefund from "./routes/CancellationRefund";
 import ShippingPolicy from "./routes/ShippingPolicy";
 import OrderCheck from "./DashboardAdmin/RoutesAdmin/OrdersCheck";
+import CallbackLoadingPage from "./Shared/CallbackLoadingPage";
+import PaymentFailed from "./Shared/PaymentFailed";
+
 
 export default function App() {
     return (
@@ -61,6 +65,8 @@ export default function App() {
                 <Route path="/CancellationRefund" element={<CancellationRefund />} />
                 <Route path="/ShippingPolicy" element={<ShippingPolicy />} />
                 <Route path="/OrderCheck" element={<OrderCheck />} />
+                <Route path="/CallbackLoadingPage" element={<CallbackLoadingPage />} />
+                <Route path="/PaymentFailed" element={<PaymentFailed />} />
             </Routes>
         </div>
     );

@@ -1,0 +1,41 @@
+﻿.payment-failed-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px; /* Add padding for better spacing on smaller screens */
+}
+
+    .payment-failed-page h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .payment-failed-page p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        text-align: center; /* Center-align the text */
+    }
+
+    .payment-failed-page button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .payment-failed-page button:hover {
+            background-color: #0056b3;
+        }
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .payment-failed-page {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+}
