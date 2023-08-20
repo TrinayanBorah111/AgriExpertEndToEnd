@@ -52,8 +52,8 @@ const Pricing = () => {
     }
 
     const getPackageType = (pack) => {
-        if (pack === "1Day")
-            return "per Day";
+        if (pack === "3Day")
+            return "per 3 Days";
         if (pack === "6Months")
             return "per 6 Months";
         if (pack === "1Year")

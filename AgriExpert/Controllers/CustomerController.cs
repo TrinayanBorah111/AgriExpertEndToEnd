@@ -74,9 +74,9 @@ namespace AgriExpert.Controllers
                 TimeSpan t = d2 - d1;
                 double NrOfDays = t.TotalDays;
                 
-                if (customerDTO.Packages.PackageType == "1Day")
+                if (customerDTO.Packages.PackageType == "3Day")
                 {
-                    if (NrOfDays >= 1)
+                    if (NrOfDays >= 3)
                     {
                         package = "Invalid";
                     }
@@ -140,7 +140,7 @@ namespace AgriExpert.Controllers
                     Console.WriteLine("Message :{0} ", e.Message);
                 }
 
-                memoryCache.Set("GeneratedOTP", value);
+                memoryCache.Set(CustomerPhone, value);
            // }
             
             return Ok(result);
@@ -149,7 +149,7 @@ namespace AgriExpert.Controllers
         [Route("/customer/verifyCustomerOTP")]
         public async Task<IActionResult> VerifiyCustomerOTPAsync(string CustomerPhone, string OTP)
         {
-            string generatedOTP = (string)memoryCache.Get("GeneratedOTP");
+            string generatedOTP = (string)memoryCache.Get(CustomerPhone);
             if (generatedOTP == OTP)
             {
                 
@@ -175,6 +175,7 @@ namespace AgriExpert.Controllers
                         PackagePurchaseDate = customer.PackagePurchaseDate,
                         CustomerAddress = customer.CustomerAddress,
                     };
+                    memoryCache.Remove(CustomerPhone);
                     //return CreatedAtAction(nameof(GetCustomerAsync), new { id = customerDTO.CustomersId }, customerDTO);
                     return Ok(customerDTO);
                 }
@@ -187,8 +188,10 @@ namespace AgriExpert.Controllers
                         CustomerName = customer.CustomerName,
                         CustomerPhone = customer.CustomerPhone,
                     };
+                    memoryCache.Remove(CustomerPhone);
                     return Ok(customerDTO);
                 }
+                
             }
             var results = "OTPNotMatching";
             return Ok(new { response = results });
