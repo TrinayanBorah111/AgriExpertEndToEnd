@@ -79,16 +79,17 @@ const Pricing = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        packagePrice: data.packagePrice,
+                        packagePrice: data.packagePrice
                     }),
                 });
 
                 if (response.ok) {
                     const responseData = await response.text();
                    // console.log('Payment request response:', JSON.parse(responseData));
-                  //  console.log('URL:', JSON.parse(responseData).data.instrumentResponse.redirectInfo.url);
+                    //  console.log('URL:', JSON.parse(responseData).data.instrumentResponse.redirectInfo.url);
+                    sessionStorage.setItem("selectedPackageToBuy", data.packagesId);
                     window.open(JSON.parse(responseData).data.instrumentResponse.redirectInfo.url, '_self');
-
+                  
                     // Redirect the user to the payment page or perform any other necessary action
                 } else {
                     console.error('Error sending payment request:', response.statusText);

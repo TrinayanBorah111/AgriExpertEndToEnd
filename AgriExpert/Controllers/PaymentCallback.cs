@@ -55,7 +55,8 @@ namespace AgriExpert.Controllers
                 if (_callbackData != null)
                 {
                     var callbackCode = _callbackData.code;
-                    return Ok(new { code = callbackCode });
+                    var transactionDetials = _callbackData.data;
+                    return Ok(new { code = callbackCode, data = transactionDetials });
                 }
                 else
                 {
@@ -73,6 +74,7 @@ namespace AgriExpert.Controllers
         public class CallbackData
         {
             public string code { get; set; }
+            public object data { get; set; }    
         }
     }
 }

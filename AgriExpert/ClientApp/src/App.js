@@ -31,6 +31,7 @@ import ShippingPolicy from "./routes/ShippingPolicy";
 import OrderCheck from "./DashboardAdmin/RoutesAdmin/OrdersCheck";
 import CallbackLoadingPage from "./Shared/CallbackLoadingPage";
 import PaymentFailed from "./Shared/PaymentFailed";
+import AnimationPage from "./Shared/AnimationPage";
 
 
 export default function App() {
@@ -67,6 +68,7 @@ export default function App() {
                 <Route path="/OrderCheck" element={<OrderCheck />} />
                 <Route path="/CallbackLoadingPage" element={<CallbackLoadingPage />} />
                 <Route path="/PaymentFailed" element={<PaymentFailed />} />
+                <Route path="/AnimationPage" element={<AnimationPage />} />
             </Routes>
         </div>
     );

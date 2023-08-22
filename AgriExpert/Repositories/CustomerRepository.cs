@@ -80,6 +80,7 @@ namespace AgriExpert.Repositories
             existingCustomer.CustomerAddress = customer.CustomerAddress;
             existingCustomer.PackagesId = customer.PackagesId;
             existingCustomer.PackagePurchaseDate= customer.PackagePurchaseDate;
+            existingCustomer.CustomerTransactionID = customer.CustomerTransactionID;
             await agriExpertDbContext.SaveChangesAsync();
             return existingCustomer;
         }
