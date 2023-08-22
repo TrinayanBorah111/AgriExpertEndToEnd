@@ -17,7 +17,7 @@ namespace AgriExpert.Controllers
     [ApiController]
     public class PhonePeController : ControllerBase
     {
-        private const string SaltKey = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+        private const string SaltKey = "d16d6324-c797-42cc-b669-55b05700c2f3";
         private const string SaltIndex = "###1";
 
         [HttpPost("/pg/v1/payment")]
@@ -26,16 +26,16 @@ namespace AgriExpert.Controllers
             try
             {
                 decimal packagePrice = paymentRequest.PackagePrice;
-
+                Guid packageID = paymentRequest.PackageID;
                 var paymentData = new
                 {
-                    merchantId = "PGTESTPAYUAT",
+                    merchantId = "AGRIEXPERTONLINE",
                     merchantTransactionId = GenerateMerchantTransactionId(),
                     merchantUserId = "MUI123",
                     amount = packagePrice * 100,
-                    redirectUrl = " https://40ee-2409-40e6-d-49c5-595b-6ce1-5c4b-ac4d.ngrok-free.app/CallbackLoadingPage",
+                    redirectUrl = "https://agriexpertt.com/CallbackLoadingPage",
                     redirectMode = "REDIRECT",
-                    callbackUrl = " https://40ee-2409-40e6-d-49c5-595b-6ce1-5c4b-ac4d.ngrok-free.app/PhonePeCallback/callback",
+                    callbackUrl = "https://agriexpertt.com/PhonePeCallback/callback",
                     mobileNumber = "9999999999",
                     paymentInstrument = new
                     {
@@ -59,7 +59,7 @@ namespace AgriExpert.Controllers
                     var request = new HttpRequestMessage
                     {
                         Method = HttpMethod.Post,
-                        RequestUri = new Uri("https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay"),
+                        RequestUri = new Uri("https://api.phonepe.com/apis/hermes/pg/v1/pay"),
                         Headers =
                         {
                             { "accept", "application/json" },
@@ -99,6 +99,7 @@ namespace AgriExpert.Controllers
 
     public class PaymentRequest
     {
+        public Guid PackageID { get; set; }
         public decimal PackagePrice { get; set; }
     }
 }

@@ -164,6 +164,7 @@ namespace AgriExpert.Controllers
                         CustomerPhone = "+91"+CustomerPhone,
                         PackagesId = Guid.Empty,
                         PackagePurchaseDate = DateTime.Now,
+                        CustomerTransactionID = "",
                         CustomerAddress = "",
                     };
                     await customerRepository.AddAsync(customer);
@@ -173,6 +174,7 @@ namespace AgriExpert.Controllers
                         CustomerName = customer.CustomerName,
                         CustomerPhone = customer.CustomerPhone,
                         PackagePurchaseDate = customer.PackagePurchaseDate,
+                        CustomerTransactionID = customer.CustomerTransactionID,
                         CustomerAddress = customer.CustomerAddress,
                     };
                     memoryCache.Remove(CustomerPhone);
@@ -264,6 +266,7 @@ namespace AgriExpert.Controllers
                 CustomerAddress = updateCustomerRequest.CustomerAddress,
                 PackagesId = updateCustomerRequest.PackagesId,
                 PackagePurchaseDate = DateTime.Now,
+                CustomerTransactionID = updateCustomerRequest.CustomerTransactionID,
                 
             };
             //Update question using repository

@@ -59,6 +59,7 @@ const Subscription = () => {
                   <p>Plan Type : {serverResponse.packages.packageType}</p>
                   <p>Plan Price : Rs.{serverResponse.packages.packagePrice}</p>
                   <p>Plan Details : {serverResponse.packages.packageDescription}</p>
+                  <p>Transaction ID : {serverResponse.customerTransactionID}</p>
                   <button className="op" style={{ marginTop:"20px",marginLeft:"auto" }} onClick={handleViewPlans}>View Plans</button>
                   </div>
               </div>
