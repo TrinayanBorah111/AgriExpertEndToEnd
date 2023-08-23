@@ -30,47 +30,49 @@ const AnimationPage = () => {
     };
 
     return (
-        <div className="animation-container">
-            {animationVisible ? (
-                <div className="animation">
-                    {countdown > 0 ? (
-                        <div className="countdown-number">{countdown}</div>
-                    ) : (
-                            <div>
-                            <div className="welcome-message">Welcome To AgriExpertt</div>
-                            <div className="box-canvas">
-                                <div className="balloon-wrapper red">
-                                    <div className="string"></div>
-                                    <div className="balloon"></div>
-                                </div>
-                                <div className="balloon-wrapper green">
-                                    <div className="string"></div>
-                                    <div className="balloon"></div>
-                                </div>
-                                <div className="balloon-wrapper orange">
-                                    <div className="string"></div>
-                                    <div className="balloon"></div>
-                                </div>
-                                <div className="balloon-wrapper blue">
-                                    <div className="string"></div>
-                                    <div className="balloon"></div>
-                                </div>
-                                <div className="balloon-wrapper yellow">
-                                    <div className="string"></div>
-                                    <div className="balloon"></div>
+        <div className="Bg-color">
+            <div className="animation-container">
+                {animationVisible ? (
+                    <div className="animation">
+                        {countdown > 0 ? (
+                            <div className="countdown-number">{countdown}</div>
+                        ) : (
+                                <div>
+                                <div className="welcome-message">Welcome To AgriExpertt</div>
+                                <div className="box-canvas">
+                                    <div className="balloon-wrapper red">
+                                        <div className="string"></div>
+                                        <div className="balloon"></div>
+                                    </div>
+                                    <div className="balloon-wrapper green">
+                                        <div className="string"></div>
+                                        <div className="balloon"></div>
+                                    </div>
+                                    <div className="balloon-wrapper orange">
+                                        <div className="string"></div>
+                                        <div className="balloon"></div>
+                                    </div>
+                                    <div className="balloon-wrapper blue">
+                                        <div className="string"></div>
+                                        <div className="balloon"></div>
+                                    </div>
+                                    <div className="balloon-wrapper yellow">
+                                        <div className="string"></div>
+                                        <div className="balloon"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div>
-                    <h2 className="animation-heading">We Are Few Steps Away From Solving Problems</h2>
-                    <button className="launch-button" onClick={handleLaunchClick}>
-                        <h2>Launch</h2>
-                    </button>
-                </div>
-            )}
+                        )}
+                    </div>
+                ) : (
+                    <div>
+                        <h2 className="animation-heading">We Are Few Steps Away From Solving Problems</h2>
+                        <button className="launch-button" onClick={handleLaunchClick}>
+                            <h2>Launch</h2>
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
