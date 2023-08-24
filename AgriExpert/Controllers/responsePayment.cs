@@ -31,12 +31,12 @@ namespace AgriExpert.Controllers
                 {
                     merchantId = "AGRIEXPERTONLINE",
                     merchantTransactionId = GenerateMerchantTransactionId(),
-                    merchantUserId = "MUI123",
+                    merchantUserId = "AgriEx2023",
                     amount = packagePrice * 100,
                     redirectUrl = "https://agriexpertt.com/CallbackLoadingPage",
                     redirectMode = "REDIRECT",
                     callbackUrl = "https://agriexpertt.com/PhonePeCallback/callback",
-                    mobileNumber = "9999999999",
+                    mobileNumber = "9435738010",
                     paymentInstrument = new
                     {
                         type = "PAY_PAGE"

@@ -50,7 +50,7 @@ function CallbackLoadingPage() {
             CustomerAddress: customerDetails?.customerAddress,
             CustomerPhone: customerDetails?.customerPhone,
             PackagesId: packageID,
-            CustomerTransactionID: NULL
+            CustomerTransactionID: transactionID
         }
         let responseData = await Services.customerConfigurations.updateCustomerWithID(customerDetails?.customersId, payload, '');
         if (responseData == 200 || responseData == 201) {
