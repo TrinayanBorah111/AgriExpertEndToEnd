@@ -43,20 +43,17 @@ function Footer() {
         <FooterLinksWrapper>
           <FooterLinksItems>
             <FooterLinksTitle>Social Media</FooterLinksTitle>
-            <FooterLink href="https://www.instagram.com/" target="_blank">
+            <FooterLink href="https://www.instagram.com/agriexpertt/" target="_blank">
               Instagram
             </FooterLink>
-            <FooterLink href="https://www.facebook.com/" target="_blank">
+            <FooterLink href="https://www.facebook.com/profile.php?id=61550505820097" target="_blank">
               Facebook
             </FooterLink>
-            <FooterLink href="https://www.youtube.com/" target="_blank">
+            <FooterLink href="https://www.youtube.com/channel/UCCQyyqNZkroC0jUkTO3l5cA" target="_blank">
               Youtube
             </FooterLink>
-            <FooterLink href="https://twitter.com/home" target="_blank">
+            <FooterLink href="https://twitter.com/AgriExpertt" target="_blank">
               Twitter
-            </FooterLink>
-            <FooterLink href="https://www.linkedin.com/feed/" target="_blank">
-              LinkedIn
             </FooterLink>
           </FooterLinksItems>
          </FooterLinksWrapper>
@@ -79,21 +76,21 @@ function Footer() {
           <WebsiteRights>Ⓒ AgriExpert 2023</WebsiteRights>
           <SocialIcons>
             <SocialIconLink
-              href="https://www.facebook.com/"
+              href="https://www.facebook.com/profile.php?id=61550505820097"
               target="_blank"
               aria-label="Facebook"
             >
               <FaFacebook />
             </SocialIconLink>
             <SocialIconLink
-              href="https://www.instagram.com/"
+              href="https://www.instagram.com/agriexpertt/"
               target="_blank"
               aria-label="Instagram"
             >
               <FaInstagram />
             </SocialIconLink>
             <SocialIconLink
-              href={"https://www.youtube.com/"}
+              href={"https://www.youtube.com/channel/UCCQyyqNZkroC0jUkTO3l5cA"}
               target="_blank"
               aria-label="Youtube"
               rel="noopener noreferrer"
@@ -101,18 +98,11 @@ function Footer() {
               <FaYoutube />
             </SocialIconLink>
             <SocialIconLink
-              href="https://twitter.com/home"
+              href="https://twitter.com/AgriExpertt"
               target="_blank"
               aria-label="Twitter"
             >
               <FaTwitter />
-            </SocialIconLink>
-            <SocialIconLink
-              href="https://www.linkedin.com/feed/"
-              target="_blank"
-              aria-label="Linkedin"
-            >
-              <FaLinkedin />
             </SocialIconLink>
           </SocialIcons>
         </SocialMediaWrap>
