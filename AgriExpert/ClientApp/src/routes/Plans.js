@@ -127,7 +127,7 @@ const Pricing = () => {
                                                 </PricingCardFeatures>
                                             ))}
 
-                                            <Button primary onClick={() => { handlePaymentClick(response) }}>
+                                            <Button id="sendOTPBtn" className="modalBtn" primary onClick={() => { handlePaymentClick(response) }}>
                                                 Choose Plan
                                             </Button>
                                         </PricingCardInfo>

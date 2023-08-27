@@ -64,7 +64,8 @@ function DashboardCus() {
             CustomerName: state.name,
             CustomerAddress: state.address,
             CustomerPhone: serverResponse.customerPhone,
-            PackagesId: serverResponse.packagesId
+            PackagesId: serverResponse.packagesId,
+            CustomerTransactionID: serverResponse.customerTransactionID
         }
         let data = await Services.customerConfigurations.updateCustomerWithID(id, payload, '');
         console.log(data)

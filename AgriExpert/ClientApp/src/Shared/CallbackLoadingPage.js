@@ -11,24 +11,28 @@ function CallbackLoadingPage() {
     const customerDetails = useSelector((state) => state.customerDetails)
     const [transactionID, setTransactionID] = useState(null);
     useEffect(() => {
-        const loadingTimeout = setTimeout(() => {
-            fetch('PhonePeCallback/getCode') // Replace with your API endpoint
-                .then(response => response.json())
-                .then(data => {
-                    setCode(data.code); // Update the state with the received code
-                    setTransactionID(data.data.transactionId)
-                    setIsLoading(false); // Loading complete
-                })
-                .catch(error => {
-                    console.error('Error fetching code:', error);
-                    console.log(code);
-                    setIsLoading(false); // Loading complete even in case of an error
-                });
-        }, 3000);
+        while (code == null || transactionID == null) {
+            const loadingTimeout = setTimeout(() => {
+                fetch('PhonePeCallback/getCode') // Replace with your API endpoint
+                    .then(response => response.json())
+                    .then(data => {
+                        setCode(data.code); // Update the state with the received code
+                        setTransactionID(data.data.transactionId)
+                        setIsLoading(false); // Loading complete
+                    })
+                    .catch(error => {
+                        console.error('Error fetching code:', error);
+                        console.log(code);
+                        setIsLoading(false); // Loading complete even in case of an error
+                    });
+            }, 2000);
+            return () => {
+                clearTimeout(loadingTimeout);
+            };
+        }
+        
         // Fetch the "code" from the server
-        return () => {
-            clearTimeout(loadingTimeout);
-        };
+        
     }, []);
     const updatePackageInDatabase = async (packageID) => {
         let payload = {

@@ -70,7 +70,7 @@ function Sign() {
                     />
                     {errors.phone && <small>{errors.phone.message}</small>}
 
-                    <button className="modalBtn" type="submit">
+                    <button id="sendOTPBtn" className="modalBtn" type="submit">
                       Send
                     </button>
                     {openModal && (

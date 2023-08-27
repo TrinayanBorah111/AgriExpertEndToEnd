@@ -57,19 +57,22 @@
     }
 
     button {
-        margin-bottom: 100px;
+        margin-left: 460px;
+    }
+    #sendOTPBtn {
+        margin-left: 0px;
     }
 }
 
 @media screen and (max-width: 768px) {
     .adex {
-        margin-left: 15rem;
+        margin-left: 1rem;
         justify-content: center;
         align-items: center;
     }
 
     .op {
-        margin-right: 100px;
+        margin-left: 460px;
     }
 }
 
